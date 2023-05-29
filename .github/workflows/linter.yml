@@ -11,7 +11,8 @@ jobs:
         with:
           node-version: '18.12.1'
       - run: yarn
-      - run: yarn tsc
+      - run: cd api; yarn tsc
+      - run: cd public/drp-37; yarn tsc
   lint:
     name: Lint Code Base
     runs-on: ubuntu-latest
