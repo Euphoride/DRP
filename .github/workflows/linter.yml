@@ -10,9 +10,8 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: '18.12.1'
-      - run: yarn
-      - run: npx tsc
         working-directory: ./api
+      - run: npm install -g typescript; tsc --build
       - run: npx run build
         working-directory: ./public/drp-37
   lint:
