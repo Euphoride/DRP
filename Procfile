@@ -1,1 +1,1 @@
-web: cd ../../api/build && node index.js
+web: cd api/build && node index.js
