@@ -1,1 +1,1 @@
-web: cd api && tsc --build && node build/index.js
+web: cd api && node build/index.js
