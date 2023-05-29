@@ -11,7 +11,7 @@ jobs:
         with:
           node-version: '18.12.1'
       - run: yarn
-      - run: npm tsc
+      - run: npx tsc
         working-directory: ./api
       - run: npx run build
         working-directory: ./public/drp-37
