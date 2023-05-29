@@ -12,7 +12,7 @@ jobs:
           node-version: '18.12.1'
       - run: npm install -g typescript; tsc --build
         working-directory: ./api
-      - run: npm run build
+      - run: npm i; npm run build
         working-directory: ./public/drp-37
   lint:
     name: Lint Code Base
