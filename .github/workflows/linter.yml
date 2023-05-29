@@ -11,9 +11,9 @@ jobs:
         with:
           node-version: '18.12.1'
       - run: yarn
-      - run: yarn tsc
+      - run: npm tsc
         working-directory: ./api
-      - run: yarn tsc
+      - run: npx run build
         working-directory: ./public/drp-37
   lint:
     name: Lint Code Base
