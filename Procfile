@@ -1,2 +1,2 @@
-web: ./api/.heroku/node/bin/node ./api/build/index.js
+web: cd api && ./.heroku/node/bin/node ./api/build/index.js
 
