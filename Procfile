@@ -1,1 +1,2 @@
-web: ls .heroku/node/bin && cd api && npm start
+web: ls -a && cd api && npm start
+
