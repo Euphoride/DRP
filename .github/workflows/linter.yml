@@ -10,7 +10,7 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: '18.12.1'
-      - run: npm install -g typescript; tsc --build
+      - run: npm i; npm install -g typescript; tsc --build
         working-directory: ./api
       - run: npm i; npm run build
         working-directory: ./public/drp-37
