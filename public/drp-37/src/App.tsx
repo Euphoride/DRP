@@ -1,7 +1,6 @@
-import type { Component } from 'solid-js';
-import { createSignal } from "solid-js" 
 
-import logo from './logo.svg';
+import { Component, createResource } from 'solid-js';
+
 import styles from './App.module.css';
 
 type PushedNotificationRecord = {
@@ -12,8 +11,6 @@ type PushedNotificationRecord = {
 async function getRemindMes(): Promise<PushedNotificationRecord[]> {
   const response = await fetch("/api/remindme");
   const raw_data = await response.json();
-
-  console.log(raw_data);
 
   // This guy here is meant to be validating the type of the data we just fetched.
   // Does this a couple of ways:

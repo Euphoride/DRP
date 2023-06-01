@@ -1,12 +1,18 @@
 import express from "express";
+import { setupTeapotRoute } from './routes/teapot';
+import { setupDefaultRoute } from './routes/default';
+import { setupRemindmeGetRoute, setupRemindmePostRoute } from './routes/remindme';
+import { setupNotificationRoute } from "./routes/subscribe";
 
 const app = express();
 
-app.get("/api", (_, res) => {
-  res.writeHead(200);
-  res.write("Hello World! I am the API.");
-  res.end();
-})
+app.use(express.json());
+
+setupNotificationRoute(app);
+setupRemindmeGetRoute(app);
+setupRemindmePostRoute(app);
+setupTeapotRoute(app);
+setupDefaultRoute(app);
 
 app.use(express.static("../public/drp-37/dist"));
 
@@ -14,5 +20,5 @@ app.use(express.static("../public/drp-37/dist"));
 const port = process.env.PORT || 3000;
 
 app.listen(port, () => {
-  console.log("Server is now listening for connections on port 80! :3");
-})
+  console.log(`Server is now listening for connections on port ${port}! :3`);
+});
