@@ -1,10 +1,11 @@
 import type { Component } from 'solid-js';
+import { createSignal } from "solid-js" 
 
 import logo from './logo.svg';
 import styles from './App.module.css';
 
 const App: Component = () => {
-  const string = "Please press the button!"
+  const [string, setString] = createSignal("Please press the button!");
   return (
     <div class={styles.App}>
       <header class={styles.header}>
@@ -20,8 +21,8 @@ const App: Component = () => {
         >
           Hello world!
         </a>
-        <p> {string}</p>
-        <button> create reminder </button>
+        <p> {string()}</p>
+        <button onClick={[setString, "Thanks for pressing the button"]}> create reminder </button>
       </header>
     </div>
   );
