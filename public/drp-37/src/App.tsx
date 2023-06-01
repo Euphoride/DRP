@@ -1,6 +1,5 @@
 import { Component, createResource } from 'solid-js';
 
-import logo from './logo.svg';
 import styles from './App.module.css';
 
 type PushedNotificationRecord = {
@@ -46,28 +45,47 @@ function getPermission(): Promise<NotificationPermission> {
   return Notification.requestPermission(x => x);
 }
 
-function sendRemindMeNotification() {
-  const image = "/assets/71ggBUmny9L.jpg";
-  const text = "This is your reminder!";
-  const title = "Remind Me";
+// function sendRemindMeNotification() {
+//   const image = "/assets/71ggBUmny9L.jpg";
+//   const text = "This is your reminder!";
+//   const title = "Remind Me";
 
-  const options = {
-    body: text,
-    icon: image,
-    vibrate: [200, 100, 200],
-    tag: "remind-me",
-    image: image,
-    badge: image,
-    actions:  [{ action: "Detail", title: "View", icon: "https://via.placeholder.com/128/ff0000" }]
-  };
+//   const options = {
+//     body: text,
+//     icon: image,
+//     vibrate: [200, 100, 200],
+//     tag: "remind-me",
+//     image: image,
+//     badge: image,
+//     actions:  [{ action: "Detail", title: "View", icon: "https://via.placeholder.com/128/ff0000" }]
+//   };
 
-  navigator.serviceWorker.ready.then((serviceWorker) => {
-    serviceWorker.showNotification(title, options);
+//   navigator.serviceWorker.ready.then((serviceWorker) => {
+//     serviceWorker.showNotification(title, options);
+//   })
+// }
+
+function registerServiceWorker() {
+  navigator.serviceWorker.register("/sw.js");
+}
+
+function subscribeToNotifications(pushServerPublicKey: string): Promise<PushSubscription> {
+  return navigator.serviceWorker.ready.then(async (sw) => {
+    const subscription = await sw.pushManager.subscribe({
+      userVisibleOnly: true,
+      applicationServerKey: pushServerPublicKey
+    });
+
+    return subscription;
   })
 }
 
-function registerServiceWorker() {
-  navigator.serviceWorker.register("/assets/sw.js");
+function sendSubscription(subscription: PushSubscription) {
+  fetch("/api/subscribe", {
+    headers: {"Content-Type": "application/json"},
+    body: JSON.stringify(subscription),
+    method: "POST"
+  });
 }
 
 const RemindMe: Component<PushedNotificationRecord> = (props) => {
@@ -80,6 +98,8 @@ const RemindMe: Component<PushedNotificationRecord> = (props) => {
   )
 }
 
+const pushServerPublicKey = "BPzRQuykU54y1FC49qgSbG-K9zENnbPWQzfWqDMqdx_zUN5fvFokHe1PCe34n_LrztdW7RKr7BG1tfgelSQzpT8";
+
 const App: Component = () => {
   const [data, { mutate, refetch }] = createResource(getRemindMes);
 
@@ -89,8 +109,18 @@ const App: Component = () => {
     data()?.map(item => (<RemindMe id={item.id} date_posted={item.date_posted}></RemindMe>));
 
   const clickEventHandler = async () => {
-    await postRemindMe(new Date())
+    await postRemindMe(new Date());
+
+    if (arePushNotificationsSupported()) {
+      getPermission().then(_ => {
+        registerServiceWorker();
+      });
+    }
+
+    const pushSub = await subscribeToNotifications(pushServerPublicKey);
+    sendSubscription(pushSub);
   }
+
 
   return (
     <div class={styles.App}>
