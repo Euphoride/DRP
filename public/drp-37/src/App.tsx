@@ -124,7 +124,7 @@ const App: Component = () => {
   return (
     <div class={styles.App}>
       <div class={styles.Form}>
-        <p>Click the button below to start a new RemindMe. You should be notified in 10 minutes.</p>
+        <p>Click the button below to start a new RemindMe. You should be notified in 60 seconds.</p>
         <textarea ref={ref!} style = {{height: "5vh", width: "40vw"}}></textarea>
         <br/>
         <button onClick={clickEventHandler} style={{"margin-bottom": "2vh"}}>Start new RemindMe</button>  
