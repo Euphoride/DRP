@@ -13,11 +13,13 @@ export function setupNotificationRoute(app: Express): void {
   webpush.setVapidDetails("https://example@domain.org", vapidKeys.publicKey, vapidKeys.privateKey);
 
   app.post("/api/subscribe", (req, res) => {
-    const pushSubscription = req.body;
+    const pushSubscription = req.body.subscription;
+    const text = req.body.text;
+
 
     setTimeout(() => {
-      webpush.sendNotification(pushSubscription, "This is a notification!");
-      console.log("Sent notification!");
+      webpush.sendNotification(pushSubscription, text);
+      console.log(`Sent notification: ${text}`);
     }, tenminutes);
     res.writeHead(200);
     res.write("Notification subscribed!");
