@@ -81,10 +81,10 @@ function subscribeToNotifications(pushServerPublicKey: string): Promise<PushSubs
   })
 }
 
-async function sendSubscription(subscription: PushSubscription) {
+async function sendSubscription(subscription: PushSubscription, customText: string) {
   await fetch("/api/subscribe", {
     headers: {"Content-Type": "application/json"},
-    body: JSON.stringify(subscription),
+    body: JSON.stringify({subscription: subscription, text: customText}),
     method: "POST"
   });
 }
@@ -104,6 +104,8 @@ const pushServerPublicKey = "BPzRQuykU54y1FC49qgSbG-K9zENnbPWQzfWqDMqdx_zUN5fvFo
 const App: Component = () => {
   const [data, { refetch }] = createResource(getRemindMes);
 
+  let ref: HTMLTextAreaElement | undefined = undefined;
+
   const clickEventHandler = async () => {
     await postRemindMe(new Date());
 
@@ -114,7 +116,7 @@ const App: Component = () => {
     }
 
     const pushSub = await subscribeToNotifications(pushServerPublicKey);
-    await sendSubscription(pushSub);
+    await sendSubscription(pushSub, ref?.value || "Generic reminder! :)");
     refetch();
   }
 
@@ -123,6 +125,8 @@ const App: Component = () => {
     <div class={styles.App}>
       <div class={styles.Form}>
         <p>Click the button below to start a new RemindMe. You should be notified in 10 minutes.</p>
+        <textarea ref={ref!} style = {{height: "5vh", width: "40vw"}}></textarea>
+        <br/>
         <button onClick={clickEventHandler} style={{"margin-bottom": "2vh"}}>Start new RemindMe</button>  
       </div>
 
@@ -131,7 +135,7 @@ const App: Component = () => {
       }
 
       {
-        data() && data()?.map(item => (<RemindMe id={item.id} date_posted={item.date_posted}></RemindMe>))
+        data() && data()?.reverse().map(item => (<RemindMe id={item.id} date_posted={item.date_posted}></RemindMe>))
       }
     </div>
   );
