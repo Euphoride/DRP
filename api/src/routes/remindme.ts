@@ -1,7 +1,9 @@
 import { Express } from 'express';
 import { Client } from 'pg';
 
-import 'dotenv';
+import dotenv from 'dotenv';
+
+dotenv.config();
 
 type PushedNotificationRecord = {
   id: number,
