@@ -1,4 +1,4 @@
-import {Express} from 'express';
+import { Express } from "express";
 
 export function setupTeapotRoute(app: Express): void {
   app.get("/api/teapot", (_, res) => {

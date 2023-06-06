@@ -1,4 +1,4 @@
-import { Express } from 'express';
+import { Express } from "express";
 
 export function setupDefaultRoute(app: Express): void {
   app.get("/api", (_, res) => {
