@@ -37,11 +37,15 @@ const App: Component = () => {
     <div class={styles.App}>
       <div>
         <p>You can set reminders here! Set a message and a date :)</p>
+        <p>Remind me to text Carl</p>
         <textarea
           ref={textRef!}
           style={{ height: "5vh", width: "40vw" }}
-        ></textarea>
+        >
+          about  
+        </textarea>
         <br />
+        <label>in</label>
         <button onClick={reminderHandlerGenerator(TWO_MINUTES_MILLI, textRef)}>
           Two minutes
         </button>
@@ -52,13 +56,14 @@ const App: Component = () => {
           Two days
         </button>
         <br />
+        <label>at</label>
+        <input type="datetime-local" ref={dateRef!} />
         <button
           onClick={customReminderHandler}
           style={{ "margin-bottom": "2vh" }}
         >
           Start new reminder
         </button>
-        <input type="datetime-local" ref={dateRef!} />
       </div>
     </div>
   );
