@@ -3,13 +3,11 @@ import { PushedNotificationRecord, arePushNotificationsSupported, getPermission,
 
 import styles from './App.module.css';
 
-
-
 const RemindMe: Component<PushedNotificationRecord> = (props) => {
   const string_date = props.date_posted.toString();
 
   return (
-    <div class = {styles.RemindMe}>
+    <div>
       Remind Me with ID {props.id} and posted at {string_date}
     </div>
   )
@@ -39,7 +37,7 @@ const App: Component = () => {
 
   return (
     <div class={styles.App}>
-      <div class={styles.Form}>
+      <div>
         <p>Click the button below to start a new RemindMe. You should be notified in 60 seconds.</p>
         <textarea ref={ref!} style = {{height: "5vh", width: "40vw"}}></textarea>
         <br/>
