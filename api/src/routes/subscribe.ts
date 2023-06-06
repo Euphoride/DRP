@@ -15,12 +15,13 @@ export function setupNotificationRoute(app: Express): void {
   app.post("/api/subscribe", (req, res) => {
     const pushSubscription = req.body.subscription;
     const text = req.body.text;
+    const time = req.body.time;
 
 
     setTimeout(() => {
       webpush.sendNotification(pushSubscription, text);
       console.log(`Sent notification: ${text}`);
-    }, tenminutes);
+    }, (time - Math.floor(Date.now() / 1000)));
     res.writeHead(200);
     res.write("Notification subscribed!");
     res.end();

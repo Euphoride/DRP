@@ -18,7 +18,8 @@ const pushServerPublicKey = "BPzRQuykU54y1FC49qgSbG-K9zENnbPWQzfWqDMqdx_zUN5fvFo
 const App: Component = () => {
   const [data, { refetch }] = createResource(getRemindMes);
 
-  let ref: HTMLTextAreaElement | undefined = undefined;
+  let textRef: HTMLTextAreaElement | undefined = undefined;
+  let dateRef: HTMLInputElement | undefined = undefined;
 
   const clickEventHandler = async () => {
     await postRemindMe(new Date());
@@ -29,9 +30,13 @@ const App: Component = () => {
       });
     }
 
+    const x  = dateRef?.value;
+
     const pushSub = await subscribeToNotifications(pushServerPublicKey);
-    await sendSubscription(pushSub, ref?.value || "Generic reminder! :)");
+    const time: number = Math.floor(new Date (dateRef!.value).getTime() / 1000);
+    await sendSubscription(pushSub, textRef?.value || "Generic reminder! :)", time);
     refetch();
+    
   }
 
 
@@ -39,9 +44,10 @@ const App: Component = () => {
     <div class={styles.App}>
       <div>
         <p>Click the button below to start a new RemindMe. You should be notified in 60 seconds.</p>
-        <textarea ref={ref!} style = {{height: "5vh", width: "40vw"}}></textarea>
+        <textarea ref={textRef!} style = {{height: "5vh", width: "40vw"}}></textarea>
         <br/>
         <button onClick={clickEventHandler} style={{"margin-bottom": "2vh"}}>Start new RemindMe</button>  
+        <input type="datetime-local" ref={dateRef!}> When?</input>
       </div>
 
       { 
