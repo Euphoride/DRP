@@ -10,81 +10,56 @@ import {
   subscribeToNotifications,
 } from "./notifications/Notification";
 
+import { reminderHandlerGenerator } from "./reminders/Reminders";
+
 import styles from "./App.module.css";
 
-const RemindMe: Component<PushedNotificationRecord> = (props) => {
-  const string_date = props.date_posted.toString();
-
-  return (
-    <div>
-      Remind Me with ID {props.id} and posted at {string_date}
-    </div>
-  );
-};
-
-const pushServerPublicKey =
-  "BPzRQuykU54y1FC49qgSbG-K9zENnbPWQzfWqDMqdx_zUN5fvFokHe1PCe34n_LrztdW7RKr7BG1tfgelSQzpT8";
+const TWO_MINUTES_MILLI = 120000;
+const TWO_HOURS_MILLI = 7.2e6;
+const TWO_DAYS_MILLI = 1.728e8;
 
 const App: Component = () => {
-  const [data, { refetch }] = createResource(getRemindMes);
+  // const [data, { refetch }] = createResource(getRemindMes);
 
   let textRef: HTMLTextAreaElement | undefined = undefined;
   let dateRef: HTMLInputElement | undefined = undefined;
 
-  const clickEventHandler = async () => {
-    await postRemindMe(new Date());
-
-    if (arePushNotificationsSupported()) {
-      getPermission().then((_) => {
-        registerServiceWorker();
-      });
-    }
-
-    const pushSub = await subscribeToNotifications(pushServerPublicKey);
-
+  const customReminderHandler = async () => {
     const refValue = dateRef!.value;
+
     const requestedTime = new Date(refValue).getTime();
     const currentTime = new Date().getTime();
 
-    console.log(requestedTime - currentTime);
-
-    await sendSubscription(
-      pushSub,
-      textRef?.value || "Generic reminder! :)",
-      requestedTime - currentTime
-    );
-    refetch();
+    await reminderHandlerGenerator(requestedTime - currentTime, textRef)();
   };
 
   return (
     <div class={styles.App}>
       <div>
-        <p>
-          Click the button below to start a new RemindMe. You should be notified
-          in 60 seconds.
-        </p>
+        <p>You can set reminders here! Set a message and a date :)</p>
+        <button onClick={reminderHandlerGenerator(TWO_MINUTES_MILLI, textRef)}>
+          Two minutes
+        </button>
+        <button onClick={reminderHandlerGenerator(TWO_HOURS_MILLI, textRef)}>
+          Two hours
+        </button>
+        <button onClick={reminderHandlerGenerator(TWO_DAYS_MILLI, textRef)}>
+          Two days
+        </button>
+        <br />
         <textarea
           ref={textRef!}
           style={{ height: "5vh", width: "40vw" }}
         ></textarea>
         <br />
-        <button onClick={clickEventHandler} style={{ "margin-bottom": "2vh" }}>
-          Start new RemindMe
+        <button
+          onClick={customReminderHandler}
+          style={{ "margin-bottom": "2vh" }}
+        >
+          Start new reminder
         </button>
-        <input type="datetime-local" ref={dateRef!}>
-          {" "}
-          When?
-        </input>
+        <input type="datetime-local" ref={dateRef!} />
       </div>
-
-      {data.loading && <p>The timestamps are loading...</p>}
-
-      {data() &&
-        data()
-          ?.reverse()
-          .map((item) => (
-            <RemindMe id={item.id} date_posted={item.date_posted}></RemindMe>
-          ))}
     </div>
   );
 };
