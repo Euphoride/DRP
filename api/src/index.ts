@@ -1,7 +1,10 @@
 import express from "express";
-import { setupTeapotRoute } from './routes/teapot';
-import { setupDefaultRoute } from './routes/default';
-import { setupRemindmeGetRoute, setupRemindmePostRoute } from './routes/remindme';
+import { setupTeapotRoute } from "./routes/teapot";
+import { setupDefaultRoute } from "./routes/default";
+import {
+  setupRemindmeGetRoute,
+  setupRemindmePostRoute,
+} from "./routes/remindme";
 import { setupNotificationRoute } from "./routes/subscribe";
 
 const app = express();

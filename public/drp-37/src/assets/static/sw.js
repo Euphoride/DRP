@@ -3,7 +3,7 @@ function receivePushNotification(event) {
 
   //const { image, tag, url, title, text } = event.data.json();
   const notificationText = event.data.text();
-  const title = "A brand new notification!"
+  const title = "A brand new notification!";
 
   const options = {
     //data: url,
@@ -15,7 +15,13 @@ function receivePushNotification(event) {
     //tag: tag,
     //image: image,
     badge: "https://spyna.it/icons/favicon.ico",
-    actions: [{ action: "Detail", title: "View", icon: "https://via.placeholder.com/128/ff0000" }]
+    actions: [
+      {
+        action: "Detail",
+        title: "View",
+        icon: "https://via.placeholder.com/128/ff0000",
+      },
+    ],
   };
 
   console.log("[Service Worker] Got here!");
