@@ -1,6 +1,8 @@
 import { Express } from 'express';
 import { Client } from 'pg';
 
+import 'dotenv';
+
 type PushedNotificationRecord = {
   id: number,
   date_posted: Date
