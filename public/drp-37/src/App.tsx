@@ -47,13 +47,13 @@ const App: Component = () => {
         <br />
         <label>in</label>
         <button onClick={reminderHandlerGenerator(TWO_MINUTES_MILLI, textRef)}>
-          Two minutes
+          2 minutes
         </button>
         <button onClick={reminderHandlerGenerator(TWO_HOURS_MILLI, textRef)}>
-          Two hours
+          2 hours
         </button>
         <button onClick={reminderHandlerGenerator(TWO_DAYS_MILLI, textRef)}>
-          Two days
+          2 days
         </button>
         <br />
         <label>at</label>
@@ -62,7 +62,7 @@ const App: Component = () => {
           onClick={customReminderHandler}
           style={{ "margin-bottom": "2vh" }}
         >
-          Start new reminder
+          Remind me!
         </button>
       </div>
     </div>
