@@ -37,10 +37,11 @@ const App: Component = () => {
     <div class={styles.App}>
       <div>
         <h3>You can set reminders here! Set a message and a date :)</h3>
-        <p>Remind me to text Carl</p>
+        <label>Remind me to text Carl</label>
         <textarea
           ref={textRef!}
           style={{ height: "5vh", width: "60vw" }}
+          class={styles.textarea}
         >
           about  
         </textarea>
