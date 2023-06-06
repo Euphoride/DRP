@@ -58,10 +58,10 @@ export async function subscribeToNotifications(pushServerPublicKey: string): Pro
   })
 }
 
-export async function sendSubscription(subscription: PushSubscription, customText: string) {
+export async function sendSubscription(subscription: PushSubscription, customText: string, time : number) {
   await fetch("/api/subscribe", {
     headers: {"Content-Type": "application/json"},
-    body: JSON.stringify({subscription: subscription, text: customText}),
+    body: JSON.stringify({subscription: subscription, text: customText, time: time}),
     method: "POST"
   });  
 }
