@@ -34,6 +34,7 @@ export const reminderHandlerGenerator = (
         registerServiceWorker();
       });
     }
+    const pushSub = await subscribeToNotifications(pushServerPublicKey);
 
     var message = "Reminder to text Carl";
     // if the textbox not just contains about or is empty
@@ -41,8 +42,7 @@ export const reminderHandlerGenerator = (
       message += " ";
       message += messageBox?.value;
     }
-    alert(message);
-    const pushSub = await subscribeToNotifications(pushServerPublicKey);
+
     await sendSubscription(
       pushSub,
       message,
