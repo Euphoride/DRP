@@ -34,13 +34,20 @@ export const reminderHandlerGenerator = (
         registerServiceWorker();
       });
     }
-
     const pushSub = await subscribeToNotifications(pushServerPublicKey);
+
+    var message = "Reminder to text Carl";
+    // if the textbox not just contains about or is empty
+    if ((messageBox?.value || "about ") != "about ") {
+      message += " ";
+      message += messageBox?.value;
+    }
 
     await sendSubscription(
       pushSub,
-      messageBox?.value || "Generic reminder! :)",
+      message,
       delta
     );
+    alert("Saved \""+message+"\"");
   };
 };

@@ -37,29 +37,36 @@ const App: Component = () => {
   return (
     <div class={styles.App}>
       <div>
-        <p>You can set reminders here! Set a message and a date :)</p>
-        <button onClick={reminderHandlerGenerator(TWO_MINUTES_MILLI, textRef)}>
-          Two minutes
-        </button>
-        <button onClick={reminderHandlerGenerator(TWO_HOURS_MILLI, textRef)}>
-          Two hours
-        </button>
-        <button onClick={reminderHandlerGenerator(TWO_DAYS_MILLI, textRef)}>
-          Two days
-        </button>
-        <br />
+        <h3>You can set reminders here! Set a message and a date :)</h3>
+        <label>Remind me to text Carl</label>
         <textarea
           ref={textRef!}
-          style={{ height: "5vh", width: "40vw" }}
-        ></textarea>
+          style={{ height: "5vh", width: "60vw" }}
+          class={styles.textarea}
+        >
+          about  
+        </textarea>
         <br />
+        <label>in</label>
+        <button class={styles.button} onClick={reminderHandlerGenerator(TWO_MINUTES_MILLI, textRef)}>
+          2 minutes
+        </button>
+        <button class={styles.button} onClick={reminderHandlerGenerator(TWO_HOURS_MILLI, textRef)}>
+          2 hours
+        </button>
+        <button class={styles.button} onClick={reminderHandlerGenerator(TWO_DAYS_MILLI, textRef)}>
+          2 days
+        </button>
+        <br />
+        <label>or at</label>
+        <input type="datetime-local" ref={dateRef!} />
         <button
+          class={styles.button} 
           onClick={customReminderHandler}
           style={{ "margin-bottom": "2vh" }}
         >
-          Start new reminder
+          Remind me!
         </button>
-        <input type="datetime-local" ref={dateRef!} />
       </div>
       <br />
       <A href = "/">To Index</A>
