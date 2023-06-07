@@ -1,10 +1,25 @@
 /* @refresh reload */
 import { render } from "solid-js/web";
+import { Component } from "solid-js";
+import { Router, Route, Routes } from "@solidjs/router";
 
 import "./index.css";
 import App from "./App";
+import Message from "./messages/Message";
 
 const root = document.getElementById("root");
+
+const Routing: Component = () => {
+  return (
+    <Router> 
+      <Routes>
+        <Route path="/" component={Message} />
+        <Route path="/app" component={App} />
+      </Routes>
+    </Router>
+  );
+};
+
 
 if (import.meta.env.DEV && !(root instanceof HTMLElement)) {
   throw new Error(
@@ -12,4 +27,4 @@ if (import.meta.env.DEV && !(root instanceof HTMLElement)) {
   );
 }
 
-render(() => <App />, root!);
+render(() => <Routing />, root!);
