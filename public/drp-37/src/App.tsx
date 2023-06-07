@@ -29,7 +29,7 @@ const App: Component = () => {
     <div class={styles.App}>
       <div>
         <h3>You can set reminders here! Set a message and a date :)</h3>
-        <label>Remind me to text Carl</label>
+        <p>Remind me to text Carl</p>
         <textarea
           ref={textRef!}
           style={{ height: "5vh", width: "60vw" }}

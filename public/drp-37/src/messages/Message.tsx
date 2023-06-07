@@ -2,7 +2,7 @@
 import { Component } from "solid-js";
 import {A} from "@solidjs/router";
 
-import chatPicture from "./chat.png"
+import chatPicture from "../assets/chat.png";
 
 const Message: Component = () => {
   return (
