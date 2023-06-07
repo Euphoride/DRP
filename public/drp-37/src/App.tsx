@@ -1,15 +1,4 @@
-import { Component, createResource } from "solid-js";
-import {
-  PushedNotificationRecord,
-  arePushNotificationsSupported,
-  getPermission,
-  getRemindMes,
-  postRemindMe,
-  registerServiceWorker,
-  sendSubscription,
-  subscribeToNotifications,
-} from "./notifications/Notification";
-
+import { Component } from "solid-js";
 import { reminderHandlerGenerator } from "./reminders/Reminders";
 
 import styles from "./App.module.css";
@@ -27,6 +16,8 @@ const App: Component = () => {
 
   const customReminderHandler = async () => {
     const refValue = dateRef!.value;
+
+    alert("Saved \""+ refValue +"\"");
 
     const requestedTime = new Date(refValue).getTime();
     const currentTime = new Date().getTime();

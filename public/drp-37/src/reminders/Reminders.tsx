@@ -48,6 +48,5 @@ export const reminderHandlerGenerator = (
       message,
       delta
     );
-    alert("Saved \""+message+"\"");
   };
 };
