@@ -42,5 +42,6 @@ export const reminderHandlerGenerator = (
       messageBox?.value || "Generic reminder! :)",
       delta
     );
+    alert("Reminder saved");
   };
 };
