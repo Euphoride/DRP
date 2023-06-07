@@ -13,6 +13,7 @@ import {
 import { reminderHandlerGenerator } from "./reminders/Reminders";
 
 import styles from "./App.module.css";
+import { A } from "@solidjs/router";
 
 const TWO_MINUTES_MILLI = 120000;
 const TWO_HOURS_MILLI = 7.2e6;
@@ -60,6 +61,8 @@ const App: Component = () => {
         </button>
         <input type="datetime-local" ref={dateRef!} />
       </div>
+      <br />
+      <A href = "/">To Index</A>
     </div>
   );
 };
