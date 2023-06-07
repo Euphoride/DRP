@@ -57,7 +57,7 @@ const App: Component = () => {
           2 days
         </button>
         <br />
-        <label>at</label>
+        <label>or at</label>
         <input type="datetime-local" ref={dateRef!} />
         <button
           class={styles.button} 
