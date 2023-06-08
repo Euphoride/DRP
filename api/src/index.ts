@@ -6,6 +6,7 @@ import {
   setupRemindmePostRoute,
 } from "./routes/remindme";
 import { setupNotificationRoute } from "./routes/subscribe";
+import { setupMessagePostRoute, setupMessageRoute } from "./routes/messaging";
 
 const app = express();
 
@@ -14,6 +15,8 @@ app.use(express.json());
 setupNotificationRoute(app);
 setupRemindmeGetRoute(app);
 setupRemindmePostRoute(app);
+setupMessageRoute(app);
+setupMessagePostRoute(app);
 setupTeapotRoute(app);
 setupDefaultRoute(app);
 

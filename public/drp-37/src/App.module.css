@@ -2,6 +2,7 @@
   text-align: center;
   font-family: Verdana, Arial, sans-serif;
 }
+
 .button {
   background-color: light-grey;
   border: 1px solid;
@@ -32,4 +33,8 @@
   border-radius: 6px;
   color: #303030;
   padding: 5px 5px;
+}
+
+.chat-image {
+  height: 100%;
 }

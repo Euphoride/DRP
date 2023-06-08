@@ -5,21 +5,20 @@ import { Router, Route, Routes } from "@solidjs/router";
 
 import "./index.css";
 import App from "./App";
-import Message from "./messages/Message";
+import MessagePage from "./messages/Message";
 
 const root = document.getElementById("root");
 
 const Routing: Component = () => {
   return (
-    <Router> 
+    <Router>
       <Routes>
-        <Route path="/" component={Message} />
+        <Route path="/" component={MessagePage} />
         <Route path="/app" component={App} />
       </Routes>
     </Router>
   );
 };
-
 
 if (import.meta.env.DEV && !(root instanceof HTMLElement)) {
   throw new Error(

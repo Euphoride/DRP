@@ -43,10 +43,6 @@ export const reminderHandlerGenerator = (
       message += messageBox?.value;
     }
 
-    await sendSubscription(
-      pushSub,
-      message,
-      delta
-    );
+    await sendSubscription(pushSub, message, delta);
   };
 };

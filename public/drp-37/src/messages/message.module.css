@@ -1,0 +1,23 @@
+.Message {
+  text-align: center;
+  font-family: Verdana, Arial, sans-serif;
+}
+
+.full_height_flexbox {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: 25vw;
+}
+
+.content_size_flexbox {
+  flex: 0 1 auto;
+}
+
+.stretch_fill_flexbox {
+  flex: 1 1 auto;
+}
+
+.display_content_container {
+  display: contents;
+}
