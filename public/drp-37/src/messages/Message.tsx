@@ -12,9 +12,7 @@ export type MessageRecord = {
 const MessageDisplay: Component<{ message: MessageRecord }> = (props) => {
   return (
     <div>
-      <p>
-        {props.message.from}: {props.message.content}
-      </p>
+      <div classList={{ [style.bubble]: true }}>{props.message.content}</div>
     </div>
   );
 };
