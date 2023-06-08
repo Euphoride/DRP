@@ -1,5 +1,12 @@
 // message mock
-import { Component, Setter, createResource, createSignal } from "solid-js";
+import {
+  Component,
+  Setter,
+  createEffect,
+  createResource,
+  createSignal,
+  on,
+} from "solid-js";
 import { A } from "@solidjs/router";
 
 import style from "./message.module.css";
@@ -88,12 +95,19 @@ export async function postMessage(from: string, content: string) {
 
 const MessagePlatform: Component<{ name: string }> = (props) => {
   let inputTextRef: HTMLInputElement | undefined = undefined;
+  let messageViewRef: HTMLDivElement | undefined = undefined;
 
   const [messages, { mutate, refetch }] =
     createResource<MessageRecord[]>(getMessages);
 
   const [webSocket, _] = createSignal(
     establishWebsocketConnection(mutate, refetch)
+  );
+
+  createEffect(
+    on(messages, () => {
+      messageViewRef?.scrollTo(0, messageViewRef?.scrollHeight);
+    })
   );
 
   const messageSendHandler = async () => {
@@ -111,19 +125,20 @@ const MessagePlatform: Component<{ name: string }> = (props) => {
     await postMessage(mesBundle.from, mesBundle.content);
 
     refetch();
-    window.scrollTo(0, document.body.scrollHeight);
   };
 
   return (
     <div>
-      <div>
+      <hr />
+      <div ref={messageViewRef!} class={style.message_view}>
         {messages()?.map((item) => (
           <MessageDisplay message={item} name={props.name} />
         ))}
       </div>
-      <div>
-        <input type="text" ref={inputTextRef} />
+      <div class={style.input_view}>
+        <input class={style.message_box_input} type="text" ref={inputTextRef} />
         <input
+          class={style.message_box_send}
           type="submit"
           value="Send Message!"
           onClick={messageSendHandler}
@@ -135,11 +150,16 @@ const MessagePlatform: Component<{ name: string }> = (props) => {
 
 const MessagePage: Component<{ name: string }> = (props) => {
   return (
-    <div class={style.Messages}>
-      <A href="/app"> Reminders </A>
-      <A href="/alex"> Alex </A>
-      <A href="/carl"> Carl </A>
-      <br />
+    <div
+      classList={{
+        [style.Messages]: true,
+      }}
+    >
+      <div class={style.message_header}>
+        <A href="/app"> Reminders </A>
+        <A href="/alex"> Alex </A>
+        <A href="/carl"> Carl </A>
+      </div>
       <MessagePlatform name={props.name} />
     </div>
   );

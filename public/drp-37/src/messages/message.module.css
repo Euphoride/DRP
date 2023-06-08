@@ -10,12 +10,69 @@
   width: 25vw;
 }
 
-.content_size_flexbox {
-  flex: 0 1 auto;
+.full_width_flexbox {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: 100%;
+}
+
+.message_header {
+  margin-left: auto;
+  margin-right: auto;
+  width: 50vh;
+
+  top: 0.5vh;
+  left: 0;
+  right: 0;
+
+  position: fixed;
+
+  display: grid;
+  grid-template-columns: auto auto auto;
+  text-align: center;
+}
+
+.message_view {
+  max-width: 85vw;
+  max-height: 85vh;
+  overflow: scroll;
+  margin-top: 2vh;
+
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+
+  margin-right: auto;
+  margin-left: auto;
+}
+
+.input_view {
+  margin-right: auto;
+  margin-left: auto;
+
+  width: fit-content;
+}
+
+.message_box_input {
+  width: 75vw;
+  height: 55px;
+}
+
+.message_box_send {
+  height: 55px;
+}
+
+.message_view::-webkit-scrollbar {
+  display: none;
 }
 
 .stretch_fill_flexbox {
   flex: 1 1 auto;
+}
+
+.scroll_fill_flexbox {
+  flex: 1 1 auto;
+  overflow: scroll;
 }
 
 .display_content_container {
