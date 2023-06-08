@@ -15,7 +15,8 @@ async function establishWebsocketConnection(
     info?: unknown
   ) => MessageRecord[] | Promise<MessageRecord[] | undefined> | null | undefined
 ): Promise<WebSocket> {
-  const ws = new WebSocket("ws://localhost:7071");
+  const host = location.origin.replace(/^http/, "ws");
+  const ws = new WebSocket(host);
 
   ws.onmessage = async (event) => {
     const blob = JSON.parse(await event.data.text());

@@ -2,6 +2,7 @@ import { Express } from "express";
 import { establishDatabaseConnection } from "./common";
 import { Client } from "pg";
 import WebSocket from "ws";
+import { Server } from "http";
 
 type MessageRecord = {
   from: string;
@@ -76,8 +77,8 @@ export function setupMessagePostRoute(app: Express): void {
   });
 }
 
-export function setupWebsocket() {
-  const wss = new WebSocket.Server({ port: 7071 });
+export function setupWebsocket(server: Server) {
+  const wss = new WebSocket.Server({ server });
 
   wss.on("connection", (ws) => {
     ws.on("message", (message) => {
