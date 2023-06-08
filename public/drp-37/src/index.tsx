@@ -9,12 +9,22 @@ import MessagePage from "./messages/Message";
 
 const root = document.getElementById("root");
 
+const AlexPage: Component = () => {
+  return <MessagePage name="Alex" />;
+};
+
+const CarlPage: Component = () => {
+  return <MessagePage name="Carl" />;
+};
+
 const Routing: Component = () => {
   return (
     <Router>
       <Routes>
-        <Route path="/" component={MessagePage} />
+        <Route path="/" component={AlexPage} />
         <Route path="/app" component={App} />
+        <Route path="/alex" component={AlexPage} />
+        <Route path="/carl" component={CarlPage} />
       </Routes>
     </Router>
   );

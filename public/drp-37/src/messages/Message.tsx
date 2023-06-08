@@ -39,10 +39,19 @@ async function establishWebsocketConnection(
   });
 }
 
-const MessageDisplay: Component<{ message: MessageRecord }> = (props) => {
+const MessageDisplay: Component<{ message: MessageRecord; name: string }> = (
+  props
+) => {
   return (
     <div>
-      <div classList={{ [style.bubble]: true }}>{props.message.content}</div>
+      <div
+        classList={{
+          [style.bubbleR]: props.name === props.message.from,
+          [style.bubbleL]: props.name !== props.message.from,
+        }}
+      >
+        {props.message.content}
+      </div>
     </div>
   );
 };
@@ -77,7 +86,7 @@ export async function postMessage(from: string, content: string) {
   });
 }
 
-const MessagePlatform: Component = () => {
+const MessagePlatform: Component<{ name: string }> = (props) => {
   let inputTextRef: HTMLInputElement | undefined = undefined;
 
   const [messages, { mutate, refetch }] =
@@ -91,7 +100,7 @@ const MessagePlatform: Component = () => {
     const socket = await webSocket();
 
     const mesBundle = {
-      from: "Alex",
+      from: props.name,
       content: inputTextRef!.value,
     };
 
@@ -102,13 +111,14 @@ const MessagePlatform: Component = () => {
     await postMessage(mesBundle.from, mesBundle.content);
 
     refetch();
+    window.scrollTo(0, document.body.scrollHeight);
   };
 
   return (
     <div>
       <div>
         {messages()?.map((item) => (
-          <MessageDisplay message={item} />
+          <MessageDisplay message={item} name={props.name} />
         ))}
       </div>
       <div>
@@ -123,12 +133,14 @@ const MessagePlatform: Component = () => {
   );
 };
 
-const MessagePage: Component = () => {
+const MessagePage: Component<{ name: string }> = (props) => {
   return (
     <div class={style.Messages}>
       <A href="/app"> Reminders </A>
+      <A href="/alex"> Alex </A>
+      <A href="/carl"> Carl </A>
       <br />
-      <MessagePlatform />
+      <MessagePlatform name={props.name} />
     </div>
   );
 };

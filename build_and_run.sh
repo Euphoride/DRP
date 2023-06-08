@@ -4,7 +4,7 @@ npm i
 npm run build
 cd ../../api
 npx prettier --write .
-tsc
+npx tsc
 npm i
 npm start
 
