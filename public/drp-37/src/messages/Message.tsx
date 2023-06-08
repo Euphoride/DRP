@@ -4,12 +4,12 @@ import { A } from "@solidjs/router";
 
 import style from "./message.module.css";
 
-type Message = {
+export type MessageRecord = {
   from: string;
   content: string;
 };
 
-const MessageRecord: Component<{ message: Message }> = (props) => {
+const MessageDisplay: Component<{ message: MessageRecord }> = (props) => {
   return (
     <div>
       <p>
@@ -17,10 +17,6 @@ const MessageRecord: Component<{ message: Message }> = (props) => {
       </p>
     </div>
   );
-};
-export type MessageRecord = {
-  from: string;
-  content: string;
 };
 
 export async function getMessages(): Promise<MessageRecord[]> {
@@ -57,7 +53,7 @@ const MessagePlatform: Component = () => {
   let inputTextRef: HTMLInputElement | undefined = undefined;
 
   const [messages, { mutate, refetch }] =
-    createResource<Message[]>(getMessages);
+    createResource<MessageRecord[]>(getMessages);
 
   const messageSendHandler = async () => {
     const mesBundle = {
@@ -76,7 +72,7 @@ const MessagePlatform: Component = () => {
     <div>
       <div>
         {messages()?.map((item) => (
-          <MessageRecord message={item} />
+          <MessageDisplay message={item} />
         ))}
       </div>
       <div>
