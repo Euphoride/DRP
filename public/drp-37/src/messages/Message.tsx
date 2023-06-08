@@ -130,7 +130,6 @@ const MessagePlatform: Component<{ name: string }> = (props) => {
   return (
     <div>
       <div class={style.seperator_view}>
-        <hr />
         <div ref={messageViewRef!} class={style.message_view}>
           {messages.loading && <p>Loading messages</p>}
           {messages()?.map((item) => (
@@ -151,6 +150,10 @@ const MessagePlatform: Component<{ name: string }> = (props) => {
   );
 };
 
+const otherName = (name: string) => {
+  return name === "Carl" ? "Alex" : "Carl";
+};
+
 const MessagePage: Component<{ name: string }> = (props) => {
   return (
     <div
@@ -158,10 +161,13 @@ const MessagePage: Component<{ name: string }> = (props) => {
         [style.Messages]: true,
       }}
     >
-      <div class={style.message_header}>
-        <A href="/app"> Reminders </A>
-        <A href="/alex"> Alex </A>
-        <A href="/carl"> Carl </A>
+      <div class={style.navbar}>
+        <div class={style.message_header}>
+          <A href="/">
+            <p> Back </p>
+          </A>
+          <h2>{otherName(props.name)}</h2>
+        </div>
       </div>
       <MessagePlatform name={props.name} />
     </div>
