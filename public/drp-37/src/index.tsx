@@ -6,6 +6,7 @@ import { Router, Route, Routes } from "@solidjs/router";
 import "./index.css";
 import App from "./App";
 import MessagePage from "./messages/Message";
+import NavPage from "./navigation/Navigation";
 
 const root = document.getElementById("root");
 
@@ -21,7 +22,7 @@ const Routing: Component = () => {
   return (
     <Router>
       <Routes>
-        <Route path="/" component={AlexPage} />
+        <Route path="/" component={NavPage} />
         <Route path="/app" component={App} />
         <Route path="/alex" component={AlexPage} />
         <Route path="/carl" component={CarlPage} />
