@@ -129,11 +129,14 @@ const MessagePlatform: Component<{ name: string }> = (props) => {
 
   return (
     <div>
-      <hr />
-      <div ref={messageViewRef!} class={style.message_view}>
-        {messages()?.map((item) => (
-          <MessageDisplay message={item} name={props.name} />
-        ))}
+      <div class={style.seperator_view}>
+        <hr />
+        <div ref={messageViewRef!} class={style.message_view}>
+          {messages.loading && <p>Loading messages</p>}
+          {messages()?.map((item) => (
+            <MessageDisplay message={item} name={props.name} />
+          ))}
+        </div>
       </div>
       <div class={style.input_view}>
         <input class={style.message_box_input} type="text" ref={inputTextRef} />

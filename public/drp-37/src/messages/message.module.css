@@ -37,13 +37,16 @@
   max-width: 85vw;
   max-height: 85vh;
   overflow: scroll;
-  margin-top: 2vh;
 
   -ms-overflow-style: none;
   scrollbar-width: none;
 
   margin-right: auto;
   margin-left: auto;
+}
+
+.seperator_view {
+  margin-top: 2vh;
 }
 
 .input_view {
