@@ -1,6 +1,8 @@
 import { Express } from "express";
 import { establishDatabaseConnection } from "./common";
 import { Client } from "pg";
+import WebSocket from "ws";
+import { Server } from "http";
 
 type MessageRecord = {
   from: string;
@@ -72,5 +74,17 @@ export function setupMessagePostRoute(app: Express): void {
     client.end();
 
     res.json({ message: result });
+  });
+}
+
+export function setupWebsocket(server: Server) {
+  const wss = new WebSocket.Server({ server });
+
+  wss.on("connection", (ws) => {
+    ws.on("message", (message) => {
+      wss.clients.forEach((client) => {
+        client.send(message);
+      });
+    });
   });
 }

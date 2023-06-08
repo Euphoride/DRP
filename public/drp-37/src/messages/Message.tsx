@@ -1,5 +1,5 @@
 // message mock
-import { Component, createResource, createSignal } from "solid-js";
+import { Component, Setter, createResource, createSignal } from "solid-js";
 import { A } from "@solidjs/router";
 
 import style from "./message.module.css";
@@ -8,6 +8,36 @@ export type MessageRecord = {
   from: string;
   content: string;
 };
+
+async function establishWebsocketConnection(
+  mutate: Setter<MessageRecord[] | undefined>,
+  refetch: (
+    info?: unknown
+  ) => MessageRecord[] | Promise<MessageRecord[] | undefined> | null | undefined
+): Promise<WebSocket> {
+  const host = location.origin.replace(/^http/, "ws");
+  const ws = new WebSocket(host);
+
+  ws.onmessage = async (event) => {
+    const blob = JSON.parse(await event.data.text());
+
+    const newBlob = {
+      from: blob.from || "default",
+      content: blob.content || "default content",
+    };
+
+    mutate((prev) => [...(prev || []), newBlob]);
+  };
+
+  return new Promise((resolve, _) => {
+    const timer = setInterval(() => {
+      if (ws.readyState === 1) {
+        clearInterval(timer);
+        resolve(ws);
+      }
+    }, 10);
+  });
+}
 
 const MessageDisplay: Component<{ message: MessageRecord }> = (props) => {
   return (
@@ -53,11 +83,19 @@ const MessagePlatform: Component = () => {
   const [messages, { mutate, refetch }] =
     createResource<MessageRecord[]>(getMessages);
 
+  const [webSocket, _] = createSignal(
+    establishWebsocketConnection(mutate, refetch)
+  );
+
   const messageSendHandler = async () => {
+    const socket = await webSocket();
+
     const mesBundle = {
       from: "Alex",
       content: inputTextRef!.value,
     };
+
+    socket.send(JSON.stringify(mesBundle));
 
     mutate((prev) => [...(prev || []), mesBundle]);
 
