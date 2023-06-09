@@ -1,5 +1,12 @@
 // message mock
-import { Component, Setter, createResource, createSignal } from "solid-js";
+import {
+  Component,
+  Setter,
+  createEffect,
+  createResource,
+  createSignal,
+  on,
+} from "solid-js";
 import { A } from "@solidjs/router";
 
 import style from "./message.module.css";
@@ -79,8 +86,8 @@ export async function postMessage(from: string, content: string) {
   await fetch("/api/messages", {
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
-      from,
-      content,
+      from: from || "Default content",
+      content: content || "Default content",
     }),
     method: "POST",
   });
@@ -96,7 +103,18 @@ const MessagePlatform: Component<{ name: string }> = (props) => {
     establishWebsocketConnection(mutate, refetch)
   );
 
+  createEffect(
+    on(messages, () => {
+      window.scrollTo(0, document.body.scrollHeight);
+    })
+  );
+
   const messageSendHandler = async () => {
+    if (!inputTextRef!.value) {
+      alert("Message can't be empty!");
+      return;
+    }
+
     const socket = await webSocket();
 
     const mesBundle = {
@@ -111,17 +129,16 @@ const MessagePlatform: Component<{ name: string }> = (props) => {
     await postMessage(mesBundle.from, mesBundle.content);
 
     refetch();
-    window.scrollTo(0, document.body.scrollHeight);
   };
 
   return (
     <div>
-      <div>
+      <div class={style.message_platform}>
         {messages()?.map((item) => (
           <MessageDisplay message={item} name={props.name} />
         ))}
       </div>
-      <div>
+      <div class={style.message_input}>
         <input type="text" ref={inputTextRef} />
         <input
           type="submit"

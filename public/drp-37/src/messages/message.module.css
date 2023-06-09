@@ -1,3 +1,17 @@
+.message_platform {
+  width: 50vw;
+  margin-left: auto;
+  margin-right: auto;
+  max-height: 70vh;
+  overflow: scroll;
+}
+
+.message_input {
+  margin-left: auto;
+  margin-right: auto;
+  width: fit-content;
+}
+
 .Message {
   text-align: center;
   font-family: Verdana, Arial, sans-serif;
@@ -21,6 +35,7 @@
 .display_content_container {
   display: contents;
 }
+
 .bubbleR {
   max-width: 60%;
   width: fit-content;
@@ -51,6 +66,7 @@
   margin-top: -3px;
   margin-right: -3px;
 }
+
 .bubbleL {
   max-width: 60%;
   width: fit-content;
