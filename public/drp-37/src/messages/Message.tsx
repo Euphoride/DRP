@@ -86,8 +86,8 @@ export async function postMessage(from: string, content: string) {
   await fetch("/api/messages", {
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
-      from,
-      content,
+      from: from || "Default content",
+      content: content || "Default content",
     }),
     method: "POST",
   });
@@ -111,6 +111,11 @@ const MessagePlatform: Component<{ name: string }> = (props) => {
   );
 
   const messageSendHandler = async () => {
+    if (!inputTextRef!.value) {
+      alert("Message can't be empty!");
+      return;
+    }
+
     const socket = await webSocket();
 
     const mesBundle = {

@@ -12,10 +12,10 @@ type MessageRecord = {
 async function getMessages(client: Client): Promise<MessageRecord[]> {
   return new Promise((resolve, reject) => {
     client.query("SELECT * FROM messages", (err, res) => {
-      if (err) reject();
+      if (err) reject(err);
 
       const records: MessageRecord[] = res.rows.map((item) => {
-        if (!item.sender || !item.message) reject();
+        if (!item.sender || !item.message) reject(JSON.stringify(item));
 
         return {
           from: item.sender as string,
