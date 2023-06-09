@@ -19,7 +19,7 @@ const App: Component = () => {
   const customReminderHandler = async () => {
     const refValue = dateRef!.value;
 
-    alert('Saved Reminder');
+    alert("Saved Reminder");
 
     const requestedTime = new Date(refValue).getTime();
     const currentTime = new Date().getTime();

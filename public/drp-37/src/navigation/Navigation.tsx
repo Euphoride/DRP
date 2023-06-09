@@ -1,12 +1,22 @@
 import { A } from "@solidjs/router";
 import { Component } from "solid-js";
 
+import styles from "./Navigation.module.css";
+
 const NavPage: Component = () => {
   return (
-    <div>
-      <h1>Your friends</h1>
-      <A href="/alex"> Carl </A>
-      <A href="/carl"> Alex </A>
+    <div class={styles.Navigation}>
+      <h1 style="color:blue;">Closer</h1>
+
+      <h4> I am: </h4>
+      <A href="/alex">
+        {" "}
+        <button>Alex</button>{" "}
+      </A>
+      <A href="/carl">
+        {" "}
+        <button> Carl</button>{" "}
+      </A>
     </div>
   );
 };

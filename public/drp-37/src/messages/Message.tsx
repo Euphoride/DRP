@@ -131,7 +131,7 @@ const MessagePlatform: Component<{ name: string }> = (props) => {
     <div>
       <div class={style.seperator_view}>
         <div ref={messageViewRef!} class={style.message_view}>
-          {messages.loading && <p>Loading messages</p>}
+          {messages.loading && <p style="color:red;">Loading messages</p>}
           {messages()?.map((item) => (
             <MessageDisplay message={item} name={props.name} />
           ))}
@@ -164,11 +164,11 @@ const MessagePage: Component<{ name: string }> = (props) => {
       <div class={style.navbar}>
         <div class={style.message_header}>
           <A href="/">
-            <p> Back </p>
+            <button> Back </button>
           </A>
-          <h2>{otherName(props.name)}</h2>
+          <h2>Chat with: {otherName(props.name)}</h2>
           <A href="/app">
-            <p> Reminders </p>
+            <button> Reminders </button>
           </A>
         </div>
       </div>
