@@ -123,6 +123,8 @@ const MessagePlatform: Component<{ name: string }> = (props) => {
       content: inputTextRef!.value,
     };
 
+    inputTextRef!.value = "";
+
     socket.send(JSON.stringify(mesBundle));
 
     mutate((prev) => [...(prev || []), mesBundle]);
