@@ -78,7 +78,7 @@
   margin-right: auto;
   margin-left: auto;
 
-  width: fit-content;
+  width: auto;
 
   display: grid;
   grid-template-columns: 75vw auto;
@@ -91,7 +91,7 @@
 }
 
 .message_box_send {
-  height: 5vh;
+  height: 6vh;
   width: 20vw;
   margin-right: 3vw;
 }
