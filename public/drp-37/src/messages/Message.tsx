@@ -142,7 +142,7 @@ const MessagePlatform: Component<{ name: string }> = (props) => {
         <input
           class={style.message_box_send}
           type="submit"
-          value="Send Message!"
+          value="Send"
           onClick={messageSendHandler}
         />
       </div>
@@ -166,7 +166,7 @@ const MessagePage: Component<{ name: string }> = (props) => {
           <A href="/">
             <button> Back </button>
           </A>
-          <h2>Chat with: {otherName(props.name)}</h2>
+          <p class={style.chatWith}>Chat with: {otherName(props.name)}</p>
           <A href="/app">
             <button> Reminders </button>
           </A>
