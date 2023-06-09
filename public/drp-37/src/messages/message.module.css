@@ -58,7 +58,7 @@
 
 .message_view {
   max-width: 85vw;
-  max-height: 85vh;
+  max-height: 80vh;
   overflow: scroll;
 
   -ms-overflow-style: none;
@@ -67,7 +67,7 @@
   margin-right: auto;
   margin-left: auto;
 
-  margin-top: 15vh;
+  margin-top: 8vh;
 }
 
 .seperator_view {
