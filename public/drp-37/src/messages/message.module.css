@@ -24,12 +24,80 @@
   width: 25vw;
 }
 
-.content_size_flexbox {
-  flex: 0 1 auto;
+.full_width_flexbox {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: 100%;
+}
+
+.message_header {
+  margin-left: auto;
+  margin-right: auto;
+  width: 70%;
+
+  top: 0.5vh;
+  left: 0;
+  right: 0;
+
+  position: fixed;
+
+  display: grid;
+  grid-template-columns: auto auto auto;
+  text-align: center;
+}
+
+.navbar {
+  width: 100vw;
+  height: 10vh;
+
+  background-color: white;
+  border-bottom: solid #c7c7c7;
+}
+
+.message_view {
+  max-width: 85vw;
+  max-height: 85vh;
+  overflow: scroll;
+
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+
+  margin-right: auto;
+  margin-left: auto;
+}
+
+.seperator_view {
+  margin-top: 2vh;
+}
+
+.input_view {
+  margin-right: auto;
+  margin-left: auto;
+
+  width: fit-content;
+}
+
+.message_box_input {
+  width: 65vw;
+  height: 5vh;
+}
+
+.message_box_send {
+  height: 5vh;
+}
+
+.message_view::-webkit-scrollbar {
+  display: none;
 }
 
 .stretch_fill_flexbox {
   flex: 1 1 auto;
+}
+
+.scroll_fill_flexbox {
+  flex: 1 1 auto;
+  overflow: scroll;
 }
 
 .display_content_container {

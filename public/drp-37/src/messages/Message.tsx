@@ -95,6 +95,7 @@ export async function postMessage(from: string, content: string) {
 
 const MessagePlatform: Component<{ name: string }> = (props) => {
   let inputTextRef: HTMLInputElement | undefined = undefined;
+  let messageViewRef: HTMLDivElement | undefined = undefined;
 
   const [messages, { mutate, refetch }] =
     createResource<MessageRecord[]>(getMessages);
@@ -105,7 +106,7 @@ const MessagePlatform: Component<{ name: string }> = (props) => {
 
   createEffect(
     on(messages, () => {
-      window.scrollTo(0, document.body.scrollHeight);
+      messageViewRef?.scrollTo(0, messageViewRef?.scrollHeight);
     })
   );
 
@@ -133,14 +134,18 @@ const MessagePlatform: Component<{ name: string }> = (props) => {
 
   return (
     <div>
-      <div class={style.message_platform}>
-        {messages()?.map((item) => (
-          <MessageDisplay message={item} name={props.name} />
-        ))}
+      <div class={style.seperator_view}>
+        <div ref={messageViewRef!} class={style.message_view}>
+          {messages.loading && <p style="color:red;">Loading messages</p>}
+          {messages()?.map((item) => (
+            <MessageDisplay message={item} name={props.name} />
+          ))}
+        </div>
       </div>
-      <div class={style.message_input}>
-        <input type="text" ref={inputTextRef} />
+      <div class={style.input_view}>
+        <input class={style.message_box_input} type="text" ref={inputTextRef} />
         <input
+          class={style.message_box_send}
           type="submit"
           value="Send Message!"
           onClick={messageSendHandler}
@@ -150,13 +155,28 @@ const MessagePlatform: Component<{ name: string }> = (props) => {
   );
 };
 
+const otherName = (name: string) => {
+  return name === "Carl" ? "Alex" : "Carl";
+};
+
 const MessagePage: Component<{ name: string }> = (props) => {
   return (
-    <div class={style.Messages}>
-      <A href="/app"> Reminders </A>
-      <A href="/alex"> Alex </A>
-      <A href="/carl"> Carl </A>
-      <br />
+    <div
+      classList={{
+        [style.Messages]: true,
+      }}
+    >
+      <div class={style.navbar}>
+        <div class={style.message_header}>
+          <A href="/">
+            <button> Back </button>
+          </A>
+          <h2>Chat with: {otherName(props.name)}</h2>
+          <A href="/app">
+            <button> Reminders </button>
+          </A>
+        </div>
+      </div>
       <MessagePlatform name={props.name} />
     </div>
   );
