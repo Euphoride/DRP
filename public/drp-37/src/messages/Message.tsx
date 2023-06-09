@@ -167,6 +167,9 @@ const MessagePage: Component<{ name: string }> = (props) => {
             <p> Back </p>
           </A>
           <h2>{otherName(props.name)}</h2>
+          <A href="/app">
+            <p> Reminders </p>
+          </A>
         </div>
       </div>
       <MessagePlatform name={props.name} />
