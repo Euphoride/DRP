@@ -7,14 +7,23 @@ import "./index.css";
 import App from "./App";
 import MessagePage from "./messages/Message";
 import NavPage from "./navigation/Navigation";
+import PersonPage from "./navigation/PersonHome";
 
 const root = document.getElementById("root");
 
 const AlexPage: Component = () => {
-  return <MessagePage name="Alex" />;
+  return <PersonPage name="Alex" />;
 };
 
 const CarlPage: Component = () => {
+  return <PersonPage name="Carl" />;
+};
+
+const AlexChatPage: Component = () => {
+  return <MessagePage name="Alex" />;
+};
+
+const CarlChatPage: Component = () => {
   return <MessagePage name="Carl" />;
 };
 
@@ -26,6 +35,8 @@ const Routing: Component = () => {
         <Route path="/app" component={App} />
         <Route path="/alex" component={AlexPage} />
         <Route path="/carl" component={CarlPage} />
+        <Route path="/alex/chat" component={AlexChatPage} />
+        <Route path="/carl/chat" component={CarlChatPage} />
       </Routes>
     </Router>
   );

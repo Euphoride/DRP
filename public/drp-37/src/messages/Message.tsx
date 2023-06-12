@@ -157,7 +157,7 @@ const MessagePlatform: Component<{ name: string }> = (props) => {
   );
 };
 
-const otherName = (name: string) => {
+export const otherName = (name: string) => {
   return name === "Carl" ? "Alex" : "Carl";
 };
 
@@ -170,7 +170,7 @@ const MessagePage: Component<{ name: string }> = (props) => {
     >
       <div class={style.navbar}>
         <div class={style.message_header}>
-          <A href="/">
+          <A href={"/" + props.name}>
             <button> Back </button>
           </A>
           <p class={style.chatWith}>Chat with: {otherName(props.name)}</p>
