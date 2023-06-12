@@ -11,6 +11,8 @@ import { A } from "@solidjs/router";
 
 import style from "./message.module.css";
 
+import App from "../App";
+
 export type MessageRecord = {
   from: string;
   content: string;
@@ -161,7 +163,17 @@ export const otherName = (name: string) => {
   return name === "Carl" ? "Alex" : "Carl";
 };
 
+const NotesPage: Component = () => {
+  return (
+    <div>
+      <h3 class={style.notes_header}> Notes</h3>
+      <input type="text" class={style.notes_input}></input>
+    </div>
+  );
+};
+
 const MessagePage: Component<{ name: string }> = (props) => {
+  var [shownPage, setShownPage] = createSignal(0);
   return (
     <div
       classList={{
@@ -171,15 +183,41 @@ const MessagePage: Component<{ name: string }> = (props) => {
       <div class={style.navbar}>
         <div class={style.message_header}>
           <A href={"/" + props.name}>
-            <button> Back </button>
+            <button class={style.header_button}> Back </button>
           </A>
-          <p class={style.chatWith}>Chat with: {otherName(props.name)}</p>
-          <A href="/app">
-            <button> Reminders </button>
-          </A>
+          <button
+            class={style.header_button}
+            onclick={() => {
+              setShownPage(0);
+            }}
+          >
+            {" "}
+            Chat{" "}
+          </button>
+          <p class={style.chatWith}>{otherName(props.name)}</p>
+          <button
+            class={style.header_button}
+            onclick={() => {
+              setShownPage(1);
+            }}
+          >
+            {" "}
+            Notes{" "}
+          </button>
+          <button
+            class={style.header_button}
+            onClick={() => {
+              setShownPage(2);
+            }}
+          >
+            {" "}
+            Reminders{" "}
+          </button>
         </div>
       </div>
-      <MessagePlatform name={props.name} />
+      {shownPage() == 0 && <MessagePlatform name={props.name} />}
+      {shownPage() == 1 && <NotesPage />}
+      {shownPage() == 2 && <App name={props.name} />}
     </div>
   );
 };
