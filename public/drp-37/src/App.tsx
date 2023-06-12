@@ -3,12 +3,13 @@ import { reminderHandlerGenerator } from "./reminders/Reminders";
 
 import styles from "./App.module.css";
 import { A } from "@solidjs/router";
+import { otherName } from "./messages/Message";
 
 const TWO_MINUTES_MILLI = 120000;
 const TWO_HOURS_MILLI = 7.2e6;
 const TWO_DAYS_MILLI = 1.728e8;
 
-const App: Component = () => {
+const App: Component<{ name: string }> = (props) => {
   // const [data, { refetch }] = createResource(getRemindMes);
 
   const [remindDate, setRemindDate] = createSignal(new Date().toString());
@@ -48,7 +49,7 @@ const App: Component = () => {
     <div class={styles.App}>
       <div>
         <h3>You can set reminders here! Set a message and a date :)</h3>
-        <p>Remind me to text Carl</p>
+        <p>Remind me to text {otherName(props.name)}</p>
         <textarea
           ref={textRef!}
           style={{ height: "5vh", width: "60vw" }}
@@ -88,7 +89,6 @@ const App: Component = () => {
         </button>
       </div>
       <br />
-      <A href="/">To Index</A>
     </div>
   );
 };
