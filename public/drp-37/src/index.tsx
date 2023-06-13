@@ -28,6 +28,10 @@ const CarlChatPage: Component = () => {
   return <MessagePage name="Carl" />;
 };
 
+const TestReflection: Component = () => {
+  return <ReflectionPage name="Alex" about="Carl" />;
+};
+
 const Routing: Component = () => {
   return (
     <Router>
@@ -38,7 +42,7 @@ const Routing: Component = () => {
         <Route path="/carl" component={CarlPage} />
         <Route path="/alex/chat" component={AlexChatPage} />
         <Route path="/carl/chat" component={CarlChatPage} />
-        <Route path="/reflection" component={ReflectionPage} />
+        <Route path="/reflection" component={TestReflection} />
       </Routes>
     </Router>
   );
