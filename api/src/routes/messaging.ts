@@ -3,23 +3,27 @@ import { establishDatabaseConnection } from "./common";
 import { Client } from "pg";
 import WebSocket from "ws";
 import { Server } from "http";
-
 type MessageRecord = {
   from: string;
+  to: string;
   content: string;
+  time: number;
 };
 
-async function getMessages(client: Client): Promise<MessageRecord[]> {
+export async function getMessages(client: Client): Promise<MessageRecord[]> {
   return new Promise((resolve, reject) => {
     client.query("SELECT * FROM messages", (err, res) => {
       if (err) reject(err);
 
       const records: MessageRecord[] = res.rows.map((item) => {
-        if (!item.sender || !item.message) reject(JSON.stringify(item));
+        if (!item.sender || !item.message || !item.to || !item.time)
+          reject(JSON.stringify(item));
 
         return {
           from: item.sender as string,
+          to: item.to as string,
           content: item.message as string,
+          time: item.time as number,
         };
       });
 

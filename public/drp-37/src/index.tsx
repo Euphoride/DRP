@@ -1,7 +1,7 @@
 /* @refresh reload */
 import { render } from "solid-js/web";
 import { Component } from "solid-js";
-import { Router, Route, Routes } from "@solidjs/router";
+import { Router, Route, Routes, useParams } from "@solidjs/router";
 
 import "./index.css";
 import App from "./App";
@@ -19,12 +19,9 @@ const CarlPage: Component = () => {
   return <PersonPage name="Carl" />;
 };
 
-const AlexChatPage: Component = () => {
-  return <MessagePage name="Alex" />;
-};
-
-const CarlChatPage: Component = () => {
-  return <MessagePage name="Carl" />;
+const ChatPage: Component = () => {
+  const params = useParams<{ me: string; them: string }>();
+  return <MessagePage me={params.me} them={params.them} />;
 };
 
 const Routing: Component = () => {
@@ -32,11 +29,9 @@ const Routing: Component = () => {
     <Router>
       <Routes>
         <Route path="/" component={NavPage} />
-        <Route path="/app" component={App} />
         <Route path="/alex" component={AlexPage} />
         <Route path="/carl" component={CarlPage} />
-        <Route path="/alex/chat" component={AlexChatPage} />
-        <Route path="/carl/chat" component={CarlChatPage} />
+        <Route path="/:me/:them" component={ChatPage} />
       </Routes>
     </Router>
   );

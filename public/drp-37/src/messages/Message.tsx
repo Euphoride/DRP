@@ -15,6 +15,7 @@ import App from "../App";
 
 export type MessageRecord = {
   from: string;
+  to: string;
   content: string;
 };
 
@@ -32,6 +33,7 @@ async function establishWebsocketConnection(
 
     const newBlob = {
       from: blob.from || "default",
+      to: blob.to || "default",
       content: blob.content || "default content",
     };
 
@@ -48,15 +50,17 @@ async function establishWebsocketConnection(
   });
 }
 
-const MessageDisplay: Component<{ message: MessageRecord; name: string }> = (
-  props
-) => {
+const MessageDisplay: Component<{
+  message: MessageRecord;
+  me: string;
+  them: string;
+}> = (props) => {
   return (
     <div>
       <div
         classList={{
-          [style.bubbleR]: props.name === props.message.from,
-          [style.bubbleL]: props.name !== props.message.from,
+          [style.bubbleR]: props.me === props.message.from,
+          [style.bubbleL]: props.me === props.message.to,
         }}
       >
         {props.message.content}
@@ -95,7 +99,7 @@ export async function postMessage(from: string, content: string) {
   });
 }
 
-const MessagePlatform: Component<{ name: string }> = (props) => {
+const MessagePlatform: Component<{ me: string; them: string }> = (props) => {
   let inputTextRef: HTMLInputElement | undefined = undefined;
   let messageViewRef: HTMLDivElement | undefined = undefined;
 
@@ -121,7 +125,8 @@ const MessagePlatform: Component<{ name: string }> = (props) => {
     const socket = await webSocket();
 
     const mesBundle = {
-      from: props.name,
+      from: props.me,
+      to: props.them,
       content: inputTextRef!.value,
     };
 
@@ -142,7 +147,7 @@ const MessagePlatform: Component<{ name: string }> = (props) => {
         <div ref={messageViewRef!} class={style.message_view}>
           {messages.loading && <p style="color:red;">Loading messages</p>}
           {messages()?.map((item) => (
-            <MessageDisplay message={item} name={props.name} />
+            <MessageDisplay message={item} me={props.me} them={props.them} />
           ))}
         </div>
       </div>
@@ -163,7 +168,7 @@ export const otherName = (name: string) => {
   return name === "Carl" ? "Alex" : "Carl";
 };
 
-const NotesPage: Component = () => {
+const NotesPage: Component<{ me: string; them: string }> = (props) => {
   return (
     <div>
       <h3 class={style.notes_header}> Notes</h3>
@@ -172,7 +177,7 @@ const NotesPage: Component = () => {
   );
 };
 
-const MessagePage: Component<{ name: string }> = (props) => {
+const MessagePage: Component<{ me: string; them: string }> = (props) => {
   var [shownPage, setShownPage] = createSignal(0);
   return (
     <div
@@ -182,7 +187,7 @@ const MessagePage: Component<{ name: string }> = (props) => {
     >
       <div class={style.navbar}>
         <div class={style.message_header}>
-          <A href={"/" + props.name}>
+          <A href={"/" + props.me}>
             <button class={style.header_button}> Back </button>
           </A>
           <button
@@ -194,7 +199,7 @@ const MessagePage: Component<{ name: string }> = (props) => {
             {" "}
             Chat{" "}
           </button>
-          <p class={style.chatWith}>{otherName(props.name)}</p>
+          <p class={style.chatWith}>{props.them}</p>
           <button
             class={style.header_button}
             onclick={() => {
@@ -215,9 +220,9 @@ const MessagePage: Component<{ name: string }> = (props) => {
           </button>
         </div>
       </div>
-      {shownPage() == 0 && <MessagePlatform name={props.name} />}
-      {shownPage() == 1 && <NotesPage />}
-      {shownPage() == 2 && <App name={props.name} />}
+      {shownPage() == 0 && <MessagePlatform me={props.me} them={props.them} />}
+      {shownPage() == 1 && <NotesPage me={props.me} them={props.them} />}
+      {shownPage() == 2 && <App name={props.me} />}
     </div>
   );
 };

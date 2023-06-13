@@ -1,17 +1,43 @@
 import { A } from "@solidjs/router";
-import { Component } from "solid-js";
+import { Component, For, JSXElement } from "solid-js";
 
-import { otherName } from "../messages/Message";
 import style from "./Person.module.css";
 
+async function getContacts(name: string): Promise<string[]> {
+  const response = await fetch("/api/contacts", {
+    headers: { "Content-Type": "application/json", name: name },
+    method: "GET",
+  });
+  const raw_data = await response.json();
+  const list: string[] =
+    raw_data.message?.flatMap((item: any) => {
+      if (!item) return [];
+
+      return item as string;
+    }) || [];
+
+  return new Promise((resolve, reject) => {
+    resolve(list);
+  });
+}
+
 const ChatChooser: Component<{ name: string }> = (props) => {
-  return (
-    <div class={style.big_button_box}>
-      <A href={"/" + props.name + "/chat"}>
-        <button class={style.big_button}> {otherName(props.name)} </button>
-      </A>
-    </div>
-  );
+  const contacts = getContacts(props.name);
+  var p: JSXElement = undefined;
+  contacts.then((contacts) => {
+    p = (
+      <div class={style.big_button_box}>
+        <For each={contacts}>
+          {(item, _) => (
+            <A href={"/" + props.name + "/" + item}>
+              =<button class={style.big_button}> {item} </button>
+            </A>
+          )}
+        </For>
+      </div>
+    );
+  });
+  return p;
 };
 
 const Prompt: Component = () => {
