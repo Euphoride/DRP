@@ -14,6 +14,13 @@ const ReflectionPage: Component<{ name: string; about: string }> = (props) => {
   var [shownPage, setShownPage] = createSignal(0);
   return (
     <div>
+      <div class={style.barcontainer}>
+        <div class={style.square}>
+          <div class={style.left}></div>
+          <div class={style.center}></div>
+          <div class={style.right}></div>
+        </div>
+      </div>
       <div class={style.container}>
         {shownPage() == 0 && (
           <PlainPage
