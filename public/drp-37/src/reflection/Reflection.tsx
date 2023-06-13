@@ -1,16 +1,13 @@
-import {
-  Component,
-  Setter,
-  createEffect,
-  createResource,
-  createSignal,
-  on,
-} from "solid-js";
+import { Component, createSignal } from "solid-js";
 
 import style from "./refection.module.css";
 
 const PlainPage: Component<{ message: string }> = (props) => {
-  return <div class={style.reflection_message}>{props.message}</div>;
+  return (
+    <div>
+      <div class={style.reflection_message}>{props.message}</div>
+    </div>
+  );
 };
 
 const ReflectionPage: Component<{ name: string; about: string }> = (props) => {
@@ -56,6 +53,15 @@ const ReflectionPage: Component<{ name: string; about: string }> = (props) => {
             }
           />
         )}
+      </div>
+      <div class={style.text_area_container}>
+        <textarea
+          // ref={textRef!}
+          style={{ height: "20vh", width: "80vw" }}
+          class={style.textarea}
+        >
+          about
+        </textarea>
       </div>
       <div class={style.footbar}>
         <button

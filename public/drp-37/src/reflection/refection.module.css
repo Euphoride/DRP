@@ -29,7 +29,7 @@
 }
 
 .container {
-  height: 95vh;
+  height: 70vh;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -50,4 +50,20 @@
   100% {
     opacity: 1;
   }
+}
+.textarea {
+  font-family: Verdana, Arial, sans-serif;
+  background-color: light-grey;
+  border: 1px solid;
+  border-color: #303030;
+  border-radius: 6px;
+  color: #303030;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 5px 5px;
+}
+
+.text_area_container {
+  width: 100vw;
+  text-align: center;
 }
