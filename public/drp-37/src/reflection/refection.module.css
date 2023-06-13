@@ -27,6 +27,22 @@
   font-family: Verdana, Arial, sans-serif;
   transition-duration: 0.1s;
 }
+.buttoncontinue {
+  background-color: light-grey;
+  border: 1px solid;
+  border-color: #303030;
+  border-radius: 10px;
+  color: #303030;
+  padding: 2px 5px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  margin: 5vw;
+  cursor: pointer;
+  font-family: Verdana, Arial, sans-serif;
+  transition-duration: 0.1s;
+  animation: enable-button 10s;
+}
 
 .container {
   height: 65vh;
@@ -130,5 +146,14 @@
   }
   100% {
     transform: scaleX(94);
+  }
+}
+
+@keyframes enable-button {
+  0% {
+    opacity: 0%;
+  }
+  100% {
+    opacity: 100%;
   }
 }

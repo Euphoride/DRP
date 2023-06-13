@@ -2,6 +2,16 @@ import { Component, createSignal } from "solid-js";
 
 import style from "./refection.module.css";
 
+const restartAnimation = (
+  divElement: HTMLDivElement | HTMLButtonElement | undefined
+) => {
+  if (divElement) {
+    divElement.style.animation = "none";
+    divElement.offsetHeight;
+    divElement.style.animation = "";
+  }
+};
+
 const PlainPage: Component<{ message: string }> = (props) => {
   return (
     <div>
@@ -11,14 +21,19 @@ const PlainPage: Component<{ message: string }> = (props) => {
 };
 
 const ReflectionPage: Component<{ name: string; about: string }> = (props) => {
-  var [shownPage, setShownPage] = createSignal(0);
+  const [shownPage, setShownPage] = createSignal(0);
+
+  let leftRef: HTMLDivElement | undefined = undefined;
+  let centerRef: HTMLDivElement | undefined = undefined;
+  let rightRef: HTMLDivElement | undefined = undefined;
+  let continueRef: HTMLButtonElement | undefined = undefined;
   return (
     <div>
       <div class={style.barcontainer}>
         <div class={style.square}>
-          <div class={style.left}></div>
-          <div class={style.center}></div>
-          <div class={style.right}></div>
+          <div class={style.left} ref={leftRef!}></div>
+          <div class={style.center} ref={centerRef!}></div>
+          <div class={style.right} ref={rightRef!}></div>
         </div>
       </div>
       <div class={style.container}>
@@ -74,14 +89,21 @@ const ReflectionPage: Component<{ name: string; about: string }> = (props) => {
         <button
           class={style.button}
           onclick={() => {
+            restartAnimation(centerRef);
+            restartAnimation(rightRef);
+            restartAnimation(continueRef);
             setShownPage(shownPage() === 0 ? 0 : shownPage() - 1);
           }}
         >
           Back
         </button>
         <button
-          class={style.button}
+          class={style.buttoncontinue}
+          ref={continueRef!}
           onclick={() => {
+            restartAnimation(centerRef);
+            restartAnimation(rightRef);
+            restartAnimation(continueRef);
             setShownPage(shownPage() == 5 ? 5 : shownPage() + 1);
           }}
         >
