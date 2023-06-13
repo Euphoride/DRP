@@ -1,14 +1,16 @@
 import { A } from "@solidjs/router";
-import { Component, For, JSXElement } from "solid-js";
+import { Component, createResource } from "solid-js";
 
 import style from "./Person.module.css";
 
 async function getContacts(name: string): Promise<string[]> {
-  const response = await fetch("/api/contacts", {
-    headers: { "Content-Type": "application/json", name: name },
+  const response = await fetch(`/api/contacts?name=${name}`, {
+    headers: { "Content-Type": "application/json" },
     method: "GET",
   });
+
   const raw_data = await response.json();
+
   const list: string[] =
     raw_data.message?.flatMap((item: any) => {
       if (!item) return [];
@@ -16,28 +18,27 @@ async function getContacts(name: string): Promise<string[]> {
       return item as string;
     }) || [];
 
-  return new Promise((resolve, reject) => {
+  return new Promise((resolve, _) => {
     resolve(list);
   });
 }
 
 const ChatChooser: Component<{ name: string }> = (props) => {
-  const contacts = getContacts(props.name);
-  var p: JSXElement = undefined;
-  contacts.then((contacts) => {
-    p = (
-      <div class={style.big_button_box}>
-        <For each={contacts}>
-          {(item, _) => (
-            <A href={"/" + props.name + "/" + item}>
-              =<button class={style.big_button}> {item} </button>
-            </A>
-          )}
-        </For>
-      </div>
-    );
+  const [contacts, { mutate, refetch }] = createResource(async () => {
+    return await getContacts(props.name);
   });
-  return p;
+
+  return (
+    <div class={style.big_button_box}>
+      {contacts() &&
+        contacts()?.map((item, _) => (
+          <A href={"/" + props.name + "/" + item}>
+            <button class={style.big_button}> {item} </button>
+          </A>
+        ))}
+      {contacts.loading && <p>Loading contacts...</p>}
+    </div>
+  );
 };
 
 const Prompt: Component = () => {
@@ -48,6 +49,7 @@ const Prompt: Component = () => {
     </div>
   );
 };
+
 const PersonPage: Component<{ name: string }> = (props) => {
   return (
     <div>

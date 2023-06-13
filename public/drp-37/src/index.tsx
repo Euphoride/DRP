@@ -19,6 +19,14 @@ const CarlPage: Component = () => {
   return <PersonPage name="Carl" />;
 };
 
+const BettyPage: Component = () => {
+  return <PersonPage name="Betty" />;
+};
+
+const DerekPage: Component = () => {
+  return <PersonPage name="Derek" />;
+};
+
 const ChatPage: Component = () => {
   const params = useParams<{ me: string; them: string }>();
   return <MessagePage me={params.me} them={params.them} />;
@@ -31,6 +39,8 @@ const Routing: Component = () => {
         <Route path="/" component={NavPage} />
         <Route path="/alex" component={AlexPage} />
         <Route path="/carl" component={CarlPage} />
+        <Route path="/betty" component={BettyPage} />
+        <Route path="/derek" component={DerekPage} />
         <Route path="/:me/:them" component={ChatPage} />
       </Routes>
     </Router>

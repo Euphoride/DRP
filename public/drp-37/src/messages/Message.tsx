@@ -14,16 +14,14 @@ import style from "./message.module.css";
 import App from "../App";
 
 export type MessageRecord = {
-  from: string;
-  to: string;
-  content: string;
+  sender: string;
+  recipient: string;
+  message: string;
+  timestamp: number;
 };
 
 async function establishWebsocketConnection(
-  mutate: Setter<MessageRecord[] | undefined>,
-  refetch: (
-    info?: unknown
-  ) => MessageRecord[] | Promise<MessageRecord[] | undefined> | null | undefined
+  mutate: Setter<MessageRecord[] | undefined>
 ): Promise<WebSocket> {
   const host = location.origin.replace(/^http/, "ws");
   const ws = new WebSocket(host);
@@ -32,9 +30,10 @@ async function establishWebsocketConnection(
     const blob = JSON.parse(await event.data.text());
 
     const newBlob = {
-      from: blob.from || "default",
-      to: blob.to || "default",
-      content: blob.content || "default content",
+      sender: blob.to || "default",
+      recipient: blob.recipient || "default content",
+      message: blob.message || "default content",
+      timestamp: blob.timestamp || 0,
     };
 
     mutate((prev) => [...(prev || []), newBlob]);
@@ -59,11 +58,11 @@ const MessageDisplay: Component<{
     <div>
       <div
         classList={{
-          [style.bubbleR]: props.me === props.message.from,
-          [style.bubbleL]: props.me === props.message.to,
+          [style.bubbleR]: props.me === props.message.sender,
+          [style.bubbleL]: props.me === props.message.recipient,
         }}
       >
-        {props.message.content}
+        {props.message.message}
       </div>
     </div>
   );
@@ -75,25 +74,37 @@ export async function getMessages(): Promise<MessageRecord[]> {
 
   const data: MessageRecord[] =
     raw_data.message?.flatMap((item: any) => {
-      if (!item.from || !item.content) return [];
+      if (!item.sender || !item.recipient || !item.message || !item.timestamp)
+        return [];
 
       return [
         {
-          from: item.from as string,
-          content: item.content as string,
+          sender: item.sender as string,
+          recipient: item.recipient as string,
+          message: item.message as string,
+          timestamp: item.timestamp as number,
         },
       ];
     }) || [];
 
+  console.log(data);
+
   return data;
 }
 
-export async function postMessage(from: string, content: string) {
+export async function postMessage(
+  from: string,
+  content: string,
+  message: string,
+  timestamp: number
+) {
   await fetch("/api/messages", {
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
-      from: from || "Default content",
-      content: content || "Default content",
+      sender: from || "Default content",
+      recipient: content || "Default content",
+      message: message || "Default content",
+      timestamp: timestamp || 0,
     }),
     method: "POST",
   });
@@ -106,9 +117,7 @@ const MessagePlatform: Component<{ me: string; them: string }> = (props) => {
   const [messages, { mutate, refetch }] =
     createResource<MessageRecord[]>(getMessages);
 
-  const [webSocket, _] = createSignal(
-    establishWebsocketConnection(mutate, refetch)
-  );
+  const [webSocket, _] = createSignal(establishWebsocketConnection(mutate));
 
   createEffect(
     on(messages, () => {
@@ -125,9 +134,10 @@ const MessagePlatform: Component<{ me: string; them: string }> = (props) => {
     const socket = await webSocket();
 
     const mesBundle = {
-      from: props.me,
-      to: props.them,
-      content: inputTextRef!.value,
+      sender: props.me,
+      recipient: props.them,
+      message: inputTextRef!.value,
+      timestamp: new Date().getTime(),
     };
 
     inputTextRef!.value = "";
@@ -136,7 +146,12 @@ const MessagePlatform: Component<{ me: string; them: string }> = (props) => {
 
     mutate((prev) => [...(prev || []), mesBundle]);
 
-    await postMessage(mesBundle.from, mesBundle.content);
+    await postMessage(
+      mesBundle.sender,
+      mesBundle.recipient,
+      mesBundle.message,
+      mesBundle.timestamp
+    );
 
     refetch();
   };
@@ -145,10 +160,17 @@ const MessagePlatform: Component<{ me: string; them: string }> = (props) => {
     <div>
       <div class={style.seperator_view}>
         <div ref={messageViewRef!} class={style.message_view}>
-          {messages.loading && <p style="color:red;">Loading messages</p>}
-          {messages()?.map((item) => (
-            <MessageDisplay message={item} me={props.me} them={props.them} />
-          ))}
+          {messages()
+            ?.filter(
+              (messageRecord) =>
+                (messageRecord.sender == props.me &&
+                  messageRecord.recipient == props.them) ||
+                (messageRecord.sender == props.them &&
+                  messageRecord.recipient == props.me)
+            )
+            .map((item) => (
+              <MessageDisplay message={item} me={props.me} them={props.them} />
+            ))}
         </div>
       </div>
       <div class={style.input_view}>
@@ -168,11 +190,36 @@ export const otherName = (name: string) => {
   return name === "Carl" ? "Alex" : "Carl";
 };
 
+const notesFocusOutHandler = (
+  sender: string,
+  recipient: string,
+  note: string
+) => {
+  fetch("/api/notes", {
+    headers: { "content-type": "application/json" },
+    method: "POST",
+    body: JSON.stringify({
+      sender,
+      recipient,
+      note,
+      timestamp: new Date().getTime(),
+    }),
+  });
+};
+
 const NotesPage: Component<{ me: string; them: string }> = (props) => {
+  let textAreaRef: HTMLTextAreaElement | undefined = undefined;
+
   return (
     <div>
       <h3 class={style.notes_header}> Notes</h3>
-      <input type="text" class={style.notes_input}></input>
+      <textarea
+        ref={textAreaRef!}
+        class={style.notes_input}
+        onFocusOut={() =>
+          notesFocusOutHandler(props.me, props.them, textAreaRef!.value)
+        }
+      ></textarea>
     </div>
   );
 };
@@ -196,8 +243,7 @@ const MessagePage: Component<{ me: string; them: string }> = (props) => {
               setShownPage(0);
             }}
           >
-            {" "}
-            Chat{" "}
+            Chat
           </button>
           <p class={style.chatWith}>{props.them}</p>
           <button
@@ -206,8 +252,7 @@ const MessagePage: Component<{ me: string; them: string }> = (props) => {
               setShownPage(1);
             }}
           >
-            {" "}
-            Notes{" "}
+            Notes
           </button>
           <button
             class={style.header_button}
@@ -215,8 +260,7 @@ const MessagePage: Component<{ me: string; them: string }> = (props) => {
               setShownPage(2);
             }}
           >
-            {" "}
-            Reminders{" "}
+            Reminders
           </button>
         </div>
       </div>

@@ -3,11 +3,12 @@ import { establishDatabaseConnection } from "./common";
 import { Client } from "pg";
 import WebSocket from "ws";
 import { Server } from "http";
+
 type MessageRecord = {
-  from: string;
-  to: string;
-  content: string;
-  time: number;
+  sender: string;
+  recipient: string;
+  message: string;
+  timestamp: number;
 };
 
 export async function getMessages(client: Client): Promise<MessageRecord[]> {
@@ -16,14 +17,14 @@ export async function getMessages(client: Client): Promise<MessageRecord[]> {
       if (err) reject(err);
 
       const records: MessageRecord[] = res.rows.map((item) => {
-        if (!item.sender || !item.message || !item.to || !item.time)
+        if (!item.sender || !item.message || !item.recipient || !item.timestamp)
           reject(JSON.stringify(item));
 
         return {
-          from: item.sender as string,
-          to: item.to as string,
-          content: item.message as string,
-          time: item.time as number,
+          sender: item.sender as string,
+          recipient: item.recipient as string,
+          message: item.message as string,
+          timestamp: item.timestamp as number,
         };
       });
 
@@ -48,12 +49,14 @@ export function setupMessageRoute(app: Express): void {
 async function sendMessage(
   from: string,
   content: string,
+  to: string,
+  timestamp: number,
   client: Client
 ): Promise<Boolean> {
   return new Promise((resolve, _) => {
     client.query(
-      "INSERT INTO messages (sender, message) VALUES ($1, $2)",
-      [from, content],
+      "INSERT INTO messages (sender, message, recipient, timestamp) VALUES ($1, $2, $3, $4)",
+      [from, content, to, timestamp],
       (err, _) => {
         resolve(!err);
       }
@@ -63,17 +66,32 @@ async function sendMessage(
 
 export function setupMessagePostRoute(app: Express): void {
   app.post("/api/messages", async (req, res) => {
-    if (!req.body.from || !req.body.content) {
+    if (
+      !req.body.sender ||
+      !req.body.message ||
+      !req.body.recipient ||
+      !req.body.timestamp
+    ) {
       res.writeHead(422);
       res.write("Could not handle request due to malformed query");
+      res.end();
+      return;
     }
 
-    const from = req.body.from;
-    const content = req.body.content;
+    const from = req.body.sender;
+    const content = req.body.message;
+    const recipient = req.body.recipient;
+    const timestamp = req.body.timestamp;
 
     const client = await establishDatabaseConnection();
 
-    const result = await sendMessage(from, content, client);
+    const result = await sendMessage(
+      from,
+      content,
+      recipient,
+      timestamp,
+      client
+    );
 
     client.end();
 

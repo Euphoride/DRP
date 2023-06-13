@@ -54,6 +54,8 @@ export function setupRemindmePostRoute(app: Express): void {
     if (!req.body.timestamp) {
       res.writeHead(422);
       res.write("Could not handle request due to lack of timestamp");
+      res.end();
+      return;
     }
 
     const timestamp: number = req.body.timestamp;
