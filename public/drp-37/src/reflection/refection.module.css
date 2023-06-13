@@ -1,6 +1,5 @@
 .footbar {
   width: 100vw;
-  height: 5vh;
 
   background-color: white;
 
@@ -9,7 +8,8 @@
   right: 0;
   bottom: 0;
 
-  align-items: center;
+  display: flex;
+  justify-content: space-between;
 }
 
 .button {
@@ -22,7 +22,7 @@
   text-align: center;
   text-decoration: none;
   display: inline-block;
-  margin: auto auto;
+  margin: 5vw;
   cursor: pointer;
   font-family: Verdana, Arial, sans-serif;
   transition-duration: 0.1s;
