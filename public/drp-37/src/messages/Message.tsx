@@ -13,6 +13,12 @@ import style from "./message.module.css";
 
 import App from "../App";
 
+import BackButton from "../assets/arrow.png";
+import ChatButton from "../assets/chat.png";
+import NotesButton from "../assets/write.png";
+import ReminderButton from "../assets/bell.png";
+import SendButton from "../assets/dm.png";
+
 export type MessageRecord = {
   from: string;
   content: string;
@@ -150,8 +156,8 @@ const MessagePlatform: Component<{ name: string }> = (props) => {
         <input class={style.message_box_input} type="text" ref={inputTextRef} />
         <input
           class={style.message_box_send}
-          type="submit"
-          value="Send"
+          type="image"
+          src={SendButton}
           onClick={messageSendHandler}
         />
       </div>
@@ -183,36 +189,33 @@ const MessagePage: Component<{ name: string }> = (props) => {
       <div class={style.navbar}>
         <div class={style.message_header}>
           <A href={"/" + props.name}>
-            <button class={style.header_button}> Back </button>
+            <input class={style.header_button} type="image" src={BackButton} />
           </A>
-          <button
+          <input
             class={style.header_button}
+            type="image"
+            src={ChatButton}
             onclick={() => {
               setShownPage(0);
             }}
-          >
-            {" "}
-            Chat{" "}
-          </button>
+          />
           <p class={style.chatWith}>{otherName(props.name)}</p>
-          <button
+          <input
             class={style.header_button}
+            type="image"
+            src={NotesButton}
             onclick={() => {
               setShownPage(1);
             }}
-          >
-            {" "}
-            Notes{" "}
-          </button>
-          <button
+          />
+          <input
             class={style.header_button}
+            type="image"
+            src={ReminderButton}
             onClick={() => {
               setShownPage(2);
             }}
-          >
-            {" "}
-            Reminders{" "}
-          </button>
+          />
         </div>
       </div>
       {shownPage() == 0 && <MessagePlatform name={props.name} />}
