@@ -44,6 +44,7 @@
 }
 
 .header_button {
+  height: 4.5vh;
   margin-left: 1vw;
   margin-right: 1vw;
 }
@@ -53,7 +54,7 @@
   height: fit-content;
 
   background-color: white;
-  border-bottom: solid #c7c7c7;
+  border-bottom: solid #e5e1ee;
 
   position: fixed;
   left: 0;
@@ -63,7 +64,7 @@
 
 .message_view {
   max-width: 85vw;
-  max-height: 80vh;
+  max-height: 78vh;
   overflow: scroll;
 
   -ms-overflow-style: none;
@@ -72,7 +73,7 @@
   margin-right: auto;
   margin-left: auto;
 
-  margin-top: 8vh;
+  margin-top: 10vh;
 }
 
 .seperator_view {
@@ -97,7 +98,6 @@
 
 .message_box_send {
   height: 6vh;
-  width: 20vw;
   margin-right: 3vw;
 }
 
