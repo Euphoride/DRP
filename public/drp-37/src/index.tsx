@@ -8,6 +8,7 @@ import App from "./App";
 import MessagePage from "./messages/Message";
 import NavPage from "./navigation/Navigation";
 import PersonPage from "./navigation/PersonHome";
+import ReflectionPage from "./reflection/Reflection";
 
 const root = document.getElementById("root");
 
@@ -32,6 +33,10 @@ const ChatPage: Component = () => {
   return <MessagePage me={params.me} them={params.them} />;
 };
 
+const TestReflection: Component = () => {
+  return <ReflectionPage name="Alex" about="Carl" />;
+};
+
 const Routing: Component = () => {
   return (
     <Router>
@@ -42,6 +47,9 @@ const Routing: Component = () => {
         <Route path="/betty" component={BettyPage} />
         <Route path="/derek" component={DerekPage} />
         <Route path="/:me/:them" component={ChatPage} />
+        <Route path="/alex/chat" component={AlexChatPage} />
+        <Route path="/carl/chat" component={CarlChatPage} />
+        <Route path="/reflection" component={TestReflection} />
       </Routes>
     </Router>
   );
