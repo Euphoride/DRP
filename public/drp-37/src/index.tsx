@@ -8,6 +8,7 @@ import App from "./App";
 import MessagePage from "./messages/Message";
 import NavPage from "./navigation/Navigation";
 import PersonPage from "./navigation/PersonHome";
+import ReflectionPage from "./reflection/Reflection";
 
 const root = document.getElementById("root");
 
@@ -37,6 +38,7 @@ const Routing: Component = () => {
         <Route path="/carl" component={CarlPage} />
         <Route path="/alex/chat" component={AlexChatPage} />
         <Route path="/carl/chat" component={CarlChatPage} />
+        <Route path="/reflection" component={ReflectionPage} />
       </Routes>
     </Router>
   );
