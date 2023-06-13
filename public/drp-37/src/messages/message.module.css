@@ -64,7 +64,7 @@
 
 .message_view {
   max-width: 85vw;
-  max-height: 78vh;
+  max-height: 75vh;
   overflow: scroll;
 
   -ms-overflow-style: none;
@@ -73,7 +73,7 @@
   margin-right: auto;
   margin-left: auto;
 
-  margin-top: 10vh;
+  margin-top: 12vh;
 }
 
 .seperator_view {
@@ -185,7 +185,7 @@
 }
 
 .notes_header {
-  margin-top: 10vh;
+  margin-top: 12vh;
   text-align: center;
 }
 
