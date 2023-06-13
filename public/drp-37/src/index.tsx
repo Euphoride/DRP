@@ -47,8 +47,6 @@ const Routing: Component = () => {
         <Route path="/betty" component={BettyPage} />
         <Route path="/derek" component={DerekPage} />
         <Route path="/:me/:them" component={ChatPage} />
-        <Route path="/alex/chat" component={AlexChatPage} />
-        <Route path="/carl/chat" component={CarlChatPage} />
         <Route path="/reflection" component={TestReflection} />
       </Routes>
     </Router>

@@ -192,10 +192,6 @@ const MessagePlatform: Component<{ me: string; them: string }> = (props) => {
   );
 };
 
-export const otherName = (name: string) => {
-  return name === "Carl" ? "Alex" : "Carl";
-};
-
 const notesFocusOutHandler = (
   sender: string,
   recipient: string,
@@ -240,7 +236,7 @@ const MessagePage: Component<{ me: string; them: string }> = (props) => {
     >
       <div class={style.navbar}>
         <div class={style.message_header}>
-          <A href={"/" + props.name}>
+          <A href={"/" + props.me}>
             <input class={style.header_button} type="image" src={BackButton} />
           </A>
           <input
@@ -251,7 +247,7 @@ const MessagePage: Component<{ me: string; them: string }> = (props) => {
               setShownPage(0);
             }}
           />
-          <p class={style.chatWith}>{otherName(props.name)}</p>
+          <p class={style.chatWith}>{props.them}</p>
           <input
             class={style.header_button}
             type="image"
