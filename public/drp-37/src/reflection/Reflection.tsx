@@ -20,6 +20,48 @@ const PlainPage: Component<{ message: string }> = (props) => {
   );
 };
 
+const reachOutFrequency = (input: string) => {
+  var message: string = "";
+  switch (input) {
+    case "1":
+      message = "after 1 week";
+      break;
+    case "2":
+      message = "after 2 weeks";
+      break;
+    case "3":
+      message = "after 1 month";
+      break;
+    case "4":
+      message = "after 2 months";
+      break;
+    default:
+      message = "Something went wrong";
+  }
+  return message;
+};
+
+const FrequencyInput: Component = () => {
+  let sliderRef: HTMLInputElement | undefined = undefined;
+  let labelRef: HTMLOutputElement | undefined = undefined;
+  return (
+    <div>
+      <input
+        oninput={() =>
+          (labelRef!.textContent = reachOutFrequency(sliderRef!.value))
+        }
+        type="range"
+        min="1"
+        max="4"
+        value="2"
+        class={style.slider}
+        ref={sliderRef!}
+      />
+      <output ref={labelRef!}>{reachOutFrequency("2")}</output>
+    </div>
+  );
+};
+
 const ReflectionPage: Component<{ name: string; about: string }> = (props) => {
   const [shownPage, setShownPage] = createSignal(0);
 
@@ -77,13 +119,14 @@ const ReflectionPage: Component<{ name: string; about: string }> = (props) => {
         )}
       </div>
       <div class={style.text_area_container}>
-        <textarea
-          // ref={textRef!}
-          style={{ height: "20vh", width: "80vw" }}
-          class={style.textarea}
-        >
-          about
-        </textarea>
+        {shownPage() == 5 && <FrequencyInput />}
+        {shownPage() !== 5 && (
+          <textarea
+            // ref={textRef!}
+            style={{ height: "20vh", width: "80vw" }}
+            class={style.textarea}
+          ></textarea>
+        )}
       </div>
       <div class={style.footbar}>
         <button
