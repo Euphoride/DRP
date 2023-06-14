@@ -185,16 +185,18 @@
   font-size: 1rem;
 }
 
-.notes_header {
+.notes_page {
   margin-top: 12vh;
+}
+.notes_header {
   text-align: center;
+  margin: 2vw;
 }
 
 .notes_input {
   width: 80vw;
   margin-left: 10vw;
   margin-right: 10vw;
-  margin-top: 5vh;
   height: 50vh;
 }
 

@@ -209,7 +209,9 @@ const notesFocusOutHandler = (
   });
 };
 
-const NotesPage: Component<{ me: string; them: string }> = (props) => {
+const NotesInput: Component<{ me: string; them: string; preview: boolean }> = (
+  props
+) => {
   let textAreaRef: HTMLTextAreaElement | undefined = undefined;
 
   return (
@@ -218,6 +220,7 @@ const NotesPage: Component<{ me: string; them: string }> = (props) => {
       <textarea
         ref={textAreaRef!}
         class={style.notes_input}
+        style={props.preview ? "height:20vh;" : ""}
         onFocusOut={() =>
           notesFocusOutHandler(props.me, props.them, textAreaRef!.value)
         }
@@ -226,10 +229,20 @@ const NotesPage: Component<{ me: string; them: string }> = (props) => {
   );
 };
 
+const NotesPage: Component<{ me: string; them: string }> = (props) => {
+  return (
+    <div class={style.notes_page}>
+      <NotesInput me={props.me} them={props.them} preview={false} />
+    </div>
+  );
+};
+
 const MessagePage: Component<{ me: string; them: string }> = (props) => {
   var [shownPage, setShownPage] = createSignal(0);
-  const [open, setOpen] = createSignal(false);
-  let btnEl;
+  const [reminderOpen, reminderSetOpen] = createSignal(false);
+  let reminderPopupRef;
+  const [notesOpen, notesSetOpen] = createSignal(false);
+  let notesPopupRef;
   return (
     <div
       classList={{
@@ -254,28 +267,50 @@ const MessagePage: Component<{ me: string; them: string }> = (props) => {
             class={style.header_button}
             type="image"
             src={NotesButton}
-            onclick={() => {
-              setShownPage(1);
-            }}
+            ref={notesPopupRef}
           />
           <input
             class={style.header_button}
             type="image"
             src={ReminderButton}
-            ref={btnEl}
+            ref={reminderPopupRef}
           />
         </div>
         <div style="position: relative;">
-          <Dismiss menuButton={btnEl} open={open} setOpen={setOpen}>
+          <Dismiss
+            menuButton={reminderPopupRef}
+            open={reminderOpen}
+            setOpen={reminderSetOpen}
+          >
             <div class={style.popup}>
-              <App name={props.them} callback={() => setOpen(false)} />
+              <App name={props.them} callback={() => reminderSetOpen(false)} />
               <button
                 onClick={() => {
-                  setOpen(false);
+                  reminderSetOpen(false);
                   setShownPage(2);
                 }}
               >
                 Show full Reminders Page
+              </button>
+            </div>
+          </Dismiss>
+        </div>
+        <div style="position: relative;">
+          <Dismiss
+            menuButton={notesPopupRef}
+            open={notesOpen}
+            setOpen={notesSetOpen}
+          >
+            <div class={style.popup}>
+              <NotesInput me={props.me} them={props.them} preview />
+              <button
+                class={style.button}
+                onClick={() => {
+                  notesSetOpen(false);
+                  setShownPage(1);
+                }}
+              >
+                Show full Notes Page
               </button>
             </div>
           </Dismiss>
