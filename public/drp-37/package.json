@@ -17,6 +17,7 @@
   },
   "dependencies": {
     "@solidjs/router": "^0.8.2",
+    "solid-dismiss": "^1.7.121",
     "solid-js": "^1.6.10",
     "solid-start": "^0.2.26",
     "time-until": "^1.0.0"

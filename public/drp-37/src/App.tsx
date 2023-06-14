@@ -8,7 +8,7 @@ const TWO_MINUTES_MILLI = 120000;
 const TWO_HOURS_MILLI = 7.2e6;
 const TWO_DAYS_MILLI = 1.728e8;
 
-const App: Component<{ name: string }> = (props) => {
+export const App: Component<{ name: string }> = (props) => {
   // const [data, { refetch }] = createResource(getRemindMes);
 
   const [remindDate, setRemindDate] = createSignal(new Date().toString());
@@ -43,18 +43,22 @@ const App: Component<{ name: string }> = (props) => {
   createEffect(() => {
     dateRef!.value = remindDate();
   });
-
   return (
     <div class={styles.App}>
       <div>
-        <h3>You can set reminders here! Set a message and a date :)</h3>
-        <p>Remind me to text {props.name}</p>
+        <h3>Remind me to check in with {props.name}</h3>
         <textarea
           ref={textRef!}
           style={{ height: "5vh", width: "60vw" }}
           class={styles.textarea}
+          onClick={() =>
+            (textRef!.value =
+              textRef!.value == "about how the interview went"
+                ? "about "
+                : textRef!.value)
+          }
         >
-          about
+          about how the interview went
         </textarea>
         <br />
         <span>in</span>
@@ -88,6 +92,15 @@ const App: Component<{ name: string }> = (props) => {
         </button>
       </div>
       <br />
+    </div>
+  );
+};
+
+export const ReminderPage: Component<{ name: string }> = (props) => {
+  return (
+    <div style="margin-top:12vh;">
+      <App name={props.name} />
+      <p>space to display things</p>
     </div>
   );
 };
