@@ -17,6 +17,10 @@ const NavPage: Component = () => {
         {" "}
         <button> Carl</button>{" "}
       </A>
+      <A href="/reflection">
+        {" "}
+        <button> Reflection Test</button>{" "}
+      </A>
     </div>
   );
 };
