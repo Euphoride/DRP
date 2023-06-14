@@ -215,15 +215,12 @@ const getNote = (me: string, them: string) => {
   };
 };
 
-const NotesPage: Component<{ me: string; them: string }> = (props) => {
 const NotesInput: Component<{ me: string; them: string; preview: boolean }> = (
   props
 ) => {
   let textAreaRef: HTMLTextAreaElement | undefined = undefined;
 
-  const [note, { mutate, refetch }] = createResource(
-    getNote(props.me, props.them)
-  );
+  const [note, _] = createResource(getNote(props.me, props.them));
 
   createEffect(
     on(note, async () => {
