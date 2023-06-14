@@ -27,11 +27,11 @@ async function listContacts(name: string): Promise<string[]> {
       };
     });
 
-  const orderedContacts = contactsWithTime.sort((a, b) => a.time - b.time);
+  contactsWithTime.sort((a, b) => b.time - a.time);
 
   const contactMap = new Map();
 
-  orderedContacts.forEach((item) => {
+  contactsWithTime.forEach((item) => {
     if (!contactMap.get(item.contact)) {
       contactMap.set(item.contact, item.time);
     }
@@ -42,13 +42,22 @@ async function listContacts(name: string): Promise<string[]> {
     value,
   }));
 
-  const computedListedContacts = computedContactsWithTime.map((i) => i.key);
+  computedContactsWithTime.reverse();
+
+  const computedListedContacts: string[] = computedContactsWithTime.map(
+    (i) => i.key
+  );
+
+  const unmentionedContacts = contacts.filter(
+    (item) => !computedListedContacts.includes(item)
+  );
+
   const listedContacts = Array.from(
-    new Set([...computedListedContacts, ...contacts])
+    new Set([...unmentionedContacts, ...computedListedContacts])
   );
 
   return new Promise((resolve, _) => {
-    resolve(listedContacts);
+    resolve(listedContacts.filter((item) => item != name));
   });
 }
 

@@ -12,6 +12,7 @@ import {
   setupWebsocket,
 } from "./routes/messaging";
 import { setupContactRoute } from "./routes/contacts";
+import { setupNotesGetRoute, setupNotesPostRoute } from "./routes/notes";
 
 const app = express();
 
@@ -25,6 +26,8 @@ setupMessagePostRoute(app);
 setupTeapotRoute(app);
 setupDefaultRoute(app);
 setupContactRoute(app);
+setupNotesPostRoute(app);
+setupNotesGetRoute(app);
 
 app.use(express.static("../public/drp-37/dist"));
 

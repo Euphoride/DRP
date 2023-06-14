@@ -209,8 +209,24 @@ const notesFocusOutHandler = (
   });
 };
 
+const getNote = (me: string, them: string) => {
+  return async () => {
+    return await fetch(`/api/notes?sender=${me}&recipient=${them}`);
+  };
+};
+
 const NotesPage: Component<{ me: string; them: string }> = (props) => {
   let textAreaRef: HTMLTextAreaElement | undefined = undefined;
+
+  const [note, { mutate, refetch }] = createResource(
+    getNote(props.me, props.them)
+  );
+
+  createEffect(
+    on(note, async () => {
+      if (textAreaRef) textAreaRef.value = (await note()?.json()).message.note;
+    })
+  );
 
   return (
     <div>
@@ -219,7 +235,11 @@ const NotesPage: Component<{ me: string; them: string }> = (props) => {
         ref={textAreaRef!}
         class={style.notes_input}
         onFocusOut={() =>
-          notesFocusOutHandler(props.me, props.them, textAreaRef!.value)
+          notesFocusOutHandler(
+            props.me,
+            props.them,
+            textAreaRef!.value || "Default note"
+          )
         }
       ></textarea>
     </div>

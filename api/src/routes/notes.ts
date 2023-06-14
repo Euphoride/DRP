@@ -18,7 +18,7 @@ async function sendNote(
 ): Promise<Boolean> {
   return new Promise((resolve, _) => {
     client.query(
-      "INSERT INTO notes (sender, recipient, notes, timestamp) VALUES ($1, $2, $3, $4)",
+      "INSERT INTO notes (sender, recipient, note, timestamp) VALUES ($1, $2, $3, $4)",
       [sender, recipient, note, timestamp],
       (err, _) => {
         resolve(!err);
@@ -27,7 +27,11 @@ async function sendNote(
   });
 }
 
-async function getNotes(client: Client): Promise<NoteRecord[]> {
+async function getNotes(
+  client: Client,
+  sender: string,
+  recipient: string
+): Promise<NoteRecord> {
   return new Promise((resolve, reject) => {
     client.query("SELECT * FROM notes", [], (err, res) => {
       if (err) reject(err);
@@ -44,7 +48,53 @@ async function getNotes(client: Client): Promise<NoteRecord[]> {
         };
       });
 
-      resolve(records);
+      const filteredRecords = records.filter(
+        (item) => item.sender === sender && item.recipient === recipient
+      );
+      filteredRecords.sort((b, a) => a.timestamp - b.timestamp);
+
+      resolve(
+        filteredRecords[0] || {
+          sender,
+          recipient,
+          note: "",
+          timestamp: 0,
+        }
+      );
+    });
+  });
+}
+
+export function setupNotesGetRoute(app: Express): void {
+  app.get("/api/notes", async (req, res) => {
+    if (!req.query.sender || !req.query.recipient) {
+      res.writeHead(422);
+      res.write("Could not handle request due to malformed query");
+      res.end();
+      return;
+    }
+
+    if (
+      typeof req.query.sender !== "string" ||
+      typeof req.query.recipient !== "string"
+    ) {
+      res.writeHead(422);
+      res.write("Could not handle request due to malformed query");
+      res.end();
+      return;
+    }
+
+    const client = await establishDatabaseConnection();
+
+    const sender = req.query.sender;
+    const recipient = req.query.recipient;
+
+    const note = await getNotes(client, sender, recipient);
+
+    client.end();
+
+    res.json({
+      message: note,
     });
   });
 }
