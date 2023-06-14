@@ -8,16 +8,16 @@ import {
   on,
 } from "solid-js";
 import { A } from "@solidjs/router";
-
 import style from "./message.module.css";
 
-import App from "../App";
+import { App, ReminderPage } from "../App";
 
 import BackButton from "../assets/arrow.png";
 import ChatButton from "../assets/chat.png";
 import NotesButton from "../assets/write.png";
 import ReminderButton from "../assets/bell.png";
 import SendButton from "../assets/dm.png";
+import Dismiss from "solid-dismiss";
 
 export type MessageRecord = {
   from: string;
@@ -180,6 +180,8 @@ const NotesPage: Component = () => {
 
 const MessagePage: Component<{ name: string }> = (props) => {
   var [shownPage, setShownPage] = createSignal(0);
+  const [open, setOpen] = createSignal(false);
+  let btnEl;
   return (
     <div
       classList={{
@@ -212,15 +214,28 @@ const MessagePage: Component<{ name: string }> = (props) => {
             class={style.header_button}
             type="image"
             src={ReminderButton}
-            onClick={() => {
-              setShownPage(2);
-            }}
+            ref={btnEl}
           />
+        </div>
+        <div style="position: relative;">
+          <Dismiss menuButton={btnEl} open={open} setOpen={setOpen}>
+            <div class={style.popup}>
+              <App name={props.name} />
+              <button
+                onClick={() => {
+                  setOpen(false);
+                  setShownPage(2);
+                }}
+              >
+                Show full Reminders Page
+              </button>
+            </div>
+          </Dismiss>
         </div>
       </div>
       {shownPage() == 0 && <MessagePlatform name={props.name} />}
       {shownPage() == 1 && <NotesPage />}
-      {shownPage() == 2 && <App name={props.name} />}
+      {shownPage() == 2 && <ReminderPage name={props.name} />}
     </div>
   );
 };
