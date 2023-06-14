@@ -268,7 +268,7 @@ const MessagePage: Component<{ me: string; them: string }> = (props) => {
         <div style="position: relative;">
           <Dismiss menuButton={btnEl} open={open} setOpen={setOpen}>
             <div class={style.popup}>
-              <App name={props.them} />
+              <App name={props.them} callback={() => setOpen(false)} />
               <button
                 onClick={() => {
                   setOpen(false);
@@ -283,7 +283,9 @@ const MessagePage: Component<{ me: string; them: string }> = (props) => {
       </div>
       {shownPage() == 0 && <MessagePlatform me={props.me} them={props.them} />}
       {shownPage() == 1 && <NotesPage me={props.me} them={props.them} />}
-      {shownPage() == 2 && <ReminderPage name={props.them} />}
+      {shownPage() == 2 && (
+        <ReminderPage name={props.them} callback={() => {}} />
+      )}
     </div>
   );
 };
