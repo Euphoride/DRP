@@ -8,7 +8,10 @@ const TWO_MINUTES_MILLI = 120000;
 const TWO_HOURS_MILLI = 7.2e6;
 const TWO_DAYS_MILLI = 1.728e8;
 
-export const App: Component<{ name: string }> = (props) => {
+export const App: Component<{
+  name: string;
+  callback: () => boolean | void;
+}> = (props) => {
   // const [data, { refetch }] = createResource(getRemindMes);
 
   const [remindDate, setRemindDate] = createSignal(new Date().toString());
@@ -85,7 +88,10 @@ export const App: Component<{ name: string }> = (props) => {
         <input type="datetime-local" ref={dateRef!} />
         <button
           class={styles.button}
-          onClick={customReminderHandler}
+          onClick={() => {
+            customReminderHandler();
+            props.callback();
+          }}
           style={{ "margin-bottom": "2vh" }}
         >
           Remind me!
@@ -96,10 +102,13 @@ export const App: Component<{ name: string }> = (props) => {
   );
 };
 
-export const ReminderPage: Component<{ name: string }> = (props) => {
+export const ReminderPage: Component<{
+  name: string;
+  callback: () => boolean | void;
+}> = (props) => {
   return (
     <div style="margin-top:12vh;">
-      <App name={props.name} />
+      <App name={props.name} callback={props.callback} />
       <p>space to display things</p>
     </div>
   );
