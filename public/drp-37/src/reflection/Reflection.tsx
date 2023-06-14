@@ -1,6 +1,7 @@
 import { Component, createSignal } from "solid-js";
 
 import style from "./refection.module.css";
+import { getNote, notesFocusOutHandler } from "../messages/Message";
 
 const restartAnimation = (
   divElement: HTMLDivElement | HTMLButtonElement | undefined
@@ -64,6 +65,27 @@ const FrequencyInput: Component = () => {
   );
 };
 
+const updateNotes = (
+  name: string,
+  about: string,
+  prompt: string,
+  ref: HTMLTextAreaElement | undefined
+) => {
+  return async () => {
+    const note = await getNote(name, about)();
+
+    const text =
+      (await note.json()).message.note +
+      `
+
+Q: ${prompt}
+A: ${ref?.value || "Default answer"}
+      `;
+
+    notesFocusOutHandler(name, about, text);
+  };
+};
+
 const ReflectionPage: Component<{ name: string; about: string }> = (props) => {
   const [shownPage, setShownPage] = createSignal(0);
 
@@ -71,6 +93,9 @@ const ReflectionPage: Component<{ name: string; about: string }> = (props) => {
   let centerRef: HTMLDivElement | undefined = undefined;
   let rightRef: HTMLDivElement | undefined = undefined;
   let continueRef: HTMLButtonElement | undefined = undefined;
+
+  let textRef: HTMLTextAreaElement | undefined = undefined;
+
   return (
     <div>
       <div class={style.barcontainer}>
@@ -124,9 +149,12 @@ const ReflectionPage: Component<{ name: string; about: string }> = (props) => {
         {shownPage() == 5 && <FrequencyInput />}
         {shownPage() !== 5 && (
           <textarea
-            // ref={textRef!}
+            ref={textRef!}
             style={{ height: "20vh", width: "80vw" }}
             class={style.textarea}
+            onFocusOut={() => {
+              updateNotes(props.name, props.about, "Default prompt", textRef)();
+            }}
           ></textarea>
         )}
       </div>
@@ -150,6 +178,7 @@ const ReflectionPage: Component<{ name: string; about: string }> = (props) => {
             restartAnimation(rightRef);
             restartAnimation(continueRef);
             setShownPage(shownPage() == 5 ? 5 : shownPage() + 1);
+            textRef!.value = "";
           }}
         >
           continue

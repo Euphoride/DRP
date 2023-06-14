@@ -192,7 +192,7 @@ const MessagePlatform: Component<{ me: string; them: string }> = (props) => {
   );
 };
 
-const notesFocusOutHandler = (
+export const notesFocusOutHandler = (
   sender: string,
   recipient: string,
   note: string
@@ -209,7 +209,7 @@ const notesFocusOutHandler = (
   });
 };
 
-const getNote = (me: string, them: string) => {
+export const getNote = (me: string, them: string) => {
   return async () => {
     return await fetch(`/api/notes?sender=${me}&recipient=${them}`);
   };
@@ -224,7 +224,12 @@ const NotesInput: Component<{ me: string; them: string; preview: boolean }> = (
 
   createEffect(
     on(note, async () => {
-      if (textAreaRef) textAreaRef.value = (await note()?.json()).message.note;
+      if (!note.loading) {
+        const text = await note()?.json();
+
+        console.log(note);
+        if (textAreaRef) textAreaRef.value = text.message.note;
+      }
     })
   );
 

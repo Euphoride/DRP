@@ -27,7 +27,7 @@ async function sendNote(
   });
 }
 
-async function getNotes(
+export async function getNotes(
   client: Client,
   sender: string,
   recipient: string
