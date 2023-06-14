@@ -1,4 +1,5 @@
 import { Component, createSignal } from "solid-js";
+import { A } from "@solidjs/router";
 
 import style from "./refection.module.css";
 import { getNote, notesFocusOutHandler } from "../messages/Message";
