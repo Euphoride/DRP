@@ -57,7 +57,9 @@ const FrequencyInput: Component = () => {
         class={style.slider}
         ref={sliderRef!}
       />
-      <output ref={labelRef!}>{reachOutFrequency("2")}</output>
+      <output style="display:block;" ref={labelRef!}>
+        {reachOutFrequency("2")}
+      </output>
     </div>
   );
 };

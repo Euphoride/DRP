@@ -13,7 +13,7 @@
 }
 
 .button {
-  background-color: light-grey;
+  background-color: #e5e1ee;
   border: 1px solid;
   border-color: #303030;
   border-radius: 10px;
@@ -28,7 +28,7 @@
   transition-duration: 0.1s;
 }
 .buttoncontinue {
-  background-color: light-grey;
+  background-color: #e5e1ee;
   border: 1px solid;
   border-color: #303030;
   border-radius: 10px;
@@ -156,4 +156,31 @@
   100% {
     opacity: 100%;
   }
+}
+
+.slider {
+  -webkit-appearance: none;
+  width: 80vw;
+  height: 4vw;
+  background: #e5e1ee;
+  outline: none;
+  display: inline;
+  border-radius: 2vw;
+}
+.slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 5vw;
+  height: 5vw;
+  background: #957fef;
+  cursor: pointer;
+  border-radius: 2vw;
+}
+
+.slider::-moz-range-thumb {
+  width: 5vw;
+  height: 5vw;
+  background: #957fef;
+  cursor: pointer;
+  border-radius: 2vw;
 }
