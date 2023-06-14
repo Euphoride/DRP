@@ -1,15 +1,42 @@
 import { A } from "@solidjs/router";
-import { Component } from "solid-js";
+import { Component, createResource } from "solid-js";
 
-import { otherName } from "../messages/Message";
 import style from "./Person.module.css";
 
+async function getContacts(name: string): Promise<string[]> {
+  const response = await fetch(`/api/contacts?name=${name}`, {
+    headers: { "Content-Type": "application/json" },
+    method: "GET",
+  });
+
+  const raw_data = await response.json();
+
+  const list: string[] =
+    raw_data.message?.flatMap((item: any) => {
+      if (!item) return [];
+
+      return item as string;
+    }) || [];
+
+  return new Promise((resolve, _) => {
+    resolve(list);
+  });
+}
+
 const ChatChooser: Component<{ name: string }> = (props) => {
+  const [contacts, { mutate, refetch }] = createResource(async () => {
+    return await getContacts(props.name);
+  });
+
   return (
     <div class={style.big_button_box}>
-      <A href={"/" + props.name + "/chat"}>
-        <button class={style.big_button}> {otherName(props.name)} </button>
-      </A>
+      {contacts() &&
+        contacts()?.map((item, _) => (
+          <A href={"/" + props.name + "/" + item}>
+            <button class={style.big_button}> {item} </button>
+          </A>
+        ))}
+      {contacts.loading && <p>Loading contacts...</p>}
     </div>
   );
 };
@@ -22,6 +49,7 @@ const Prompt: Component = () => {
     </div>
   );
 };
+
 const PersonPage: Component<{ name: string }> = (props) => {
   return (
     <div>

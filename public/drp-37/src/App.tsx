@@ -3,7 +3,6 @@ import { reminderHandlerGenerator } from "./reminders/Reminders";
 
 import styles from "./App.module.css";
 import { A } from "@solidjs/router";
-import { otherName } from "./messages/Message";
 
 const TWO_MINUTES_MILLI = 120000;
 const TWO_HOURS_MILLI = 7.2e6;
@@ -47,7 +46,7 @@ export const App: Component<{ name: string }> = (props) => {
   return (
     <div class={styles.App}>
       <div>
-        <h3>Remind me to check in with {otherName(props.name)}</h3>
+        <h3>Remind me to check in with {props.name}</h3>
         <textarea
           ref={textRef!}
           style={{ height: "5vh", width: "60vw" }}

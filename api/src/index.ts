@@ -11,6 +11,7 @@ import {
   setupMessageRoute,
   setupWebsocket,
 } from "./routes/messaging";
+import { setupContactRoute } from "./routes/contacts";
 
 const app = express();
 
@@ -23,6 +24,7 @@ setupMessageRoute(app);
 setupMessagePostRoute(app);
 setupTeapotRoute(app);
 setupDefaultRoute(app);
+setupContactRoute(app);
 
 app.use(express.static("../public/drp-37/dist"));
 
