@@ -13,13 +13,17 @@ const NavPage: Component = () => {
         {" "}
         <button>Alex</button>{" "}
       </A>
+      <A href="/betty">
+        {" "}
+        <button>Betty</button>{" "}
+      </A>
       <A href="/carl">
         {" "}
         <button> Carl</button>{" "}
       </A>
-      <A href="/reflection">
+      <A href="/derek">
         {" "}
-        <button> Reflection Test</button>{" "}
+        <button>Derek</button>{" "}
       </A>
     </div>
   );

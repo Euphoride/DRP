@@ -32,9 +32,14 @@ const ChatChooser: Component<{ name: string }> = (props) => {
     <div class={style.big_button_box}>
       {contacts() &&
         contacts()?.map((item, _) => (
-          <A href={"/" + props.name + "/" + item}>
-            <button class={style.big_button}> {item} </button>
-          </A>
+          <div class={style.contact_grid}>
+            <A href={"/" + props.name + "/" + item}>
+              <button class={style.big_button}> {item} </button>
+            </A>
+            <A href={"/reflection/" + props.name + "/" + item}>
+              <button class={style.big_button}> Reflect about {item} </button>
+            </A>
+          </div>
         ))}
       {contacts.loading && <p>Loading contacts...</p>}
     </div>

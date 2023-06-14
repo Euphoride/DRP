@@ -28,7 +28,7 @@
 }
 
 .big_button {
-  width: 100vw;
+  width: 50vw;
   height: 15vh;
 }
 
@@ -38,4 +38,10 @@
   border: 1px solid #000;
   text-align: center;
   margin-top: 5vh;
+}
+
+.contact_grid {
+  display: grid;
+  grid-template-columns: auto auto;
+  text-align: center;
 }

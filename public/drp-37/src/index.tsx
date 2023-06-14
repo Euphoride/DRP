@@ -33,8 +33,9 @@ const ChatPage: Component = () => {
   return <MessagePage me={params.me} them={params.them} />;
 };
 
-const TestReflection: Component = () => {
-  return <ReflectionPage name="Alex" about="Carl" />;
+const ReflectPage: Component = () => {
+  const params = useParams<{ me: string; them: string }>();
+  return <ReflectionPage name={params.me} about={params.them} />;
 };
 
 const Routing: Component = () => {
@@ -47,7 +48,7 @@ const Routing: Component = () => {
         <Route path="/betty" component={BettyPage} />
         <Route path="/derek" component={DerekPage} />
         <Route path="/:me/:them" component={ChatPage} />
-        <Route path="/reflection" component={TestReflection} />
+        <Route path="/reflection/:me/:them" component={ReflectPage} />
       </Routes>
     </Router>
   );

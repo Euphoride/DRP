@@ -1,4 +1,5 @@
 import { Component, createSignal } from "solid-js";
+import { A } from "@solidjs/router";
 
 import style from "./refection.module.css";
 
@@ -142,18 +143,25 @@ const ReflectionPage: Component<{ name: string; about: string }> = (props) => {
         >
           Back
         </button>
-        <button
-          class={style.buttoncontinue}
-          ref={continueRef!}
-          onclick={() => {
-            restartAnimation(centerRef);
-            restartAnimation(rightRef);
-            restartAnimation(continueRef);
-            setShownPage(shownPage() == 5 ? 5 : shownPage() + 1);
-          }}
-        >
-          continue
-        </button>
+        {shownPage() != 5 && (
+          <button
+            class={style.buttoncontinue}
+            ref={continueRef!}
+            onclick={() => {
+              restartAnimation(centerRef);
+              restartAnimation(rightRef);
+              restartAnimation(continueRef);
+              setShownPage(shownPage() == 5 ? 5 : shownPage() + 1);
+            }}
+          >
+            continue
+          </button>
+        )}
+        {shownPage() == 5 && (
+          <A href={"/" + props.name}>
+            <button class={style.buttoncontinue}>Finish</button>{" "}
+          </A>
+        )}
       </div>
     </div>
   );
