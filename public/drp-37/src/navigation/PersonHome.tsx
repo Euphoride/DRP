@@ -33,11 +33,15 @@ const ChatChooser: Component<{ name: string }> = (props) => {
       {contacts() &&
         contacts()?.map((item, _) => (
           <div class={style.contact_grid}>
-            <A href={"/" + props.name + "/" + item}>
-              <button class={style.big_button}> {item} </button>
+            <A
+              style="text-decoration: none; padding: 2vh; padding-left: 17vw;"
+              href={"/" + props.name + "/" + item}
+            >
+              <button class={style.contact_button}> {item} </button>
+              <p class={style.p}>Laurem Ipsum</p>
             </A>
             <A href={"/reflection/" + props.name + "/" + item}>
-              <button class={style.big_button}> Reflect about {item} </button>
+              <button class={style.accent_button}> Reflect</button>
             </A>
           </div>
         ))}

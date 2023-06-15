@@ -25,16 +25,21 @@
 
 .big_button_box {
   margin-top: 15vh;
+  border-bottom: solid 2px #e5e1ee;
 }
-
-.big_button {
-  width: 50vw;
-  height: 15vh;
-  background-color: #e5e1ee;
+.contact_button {
+  background: #ffffff;
+  color: black;
+  font-size: 1.5rem;
+  padding: 0;
+  border: none;
+}
+.accent_button {
+  background-color: #957fef;
   border: 1px solid;
-  border-color: #303030;
+  border-color: #957fef;
   border-radius: 10px;
-  color: #303030;
+  color: #ffffff;
   padding: 2px 5px;
   text-align: center;
   text-decoration: none;
@@ -55,8 +60,9 @@
 
 .contact_grid {
   display: grid;
-  grid-template-columns: auto auto;
-  text-align: center;
+  grid-template-columns: auto max-content;
+  text-align: cienter;
+  border-top: solid 2px #e5e1ee;
 }
 
 .button {
@@ -73,4 +79,9 @@
   cursor: pointer;
   font-family: Verdana, Arial, sans-serif;
   transition-duration: 0.1s;
+}
+
+.p {
+  margin: 0;
+  color: #8b728e;
 }
