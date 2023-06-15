@@ -3,7 +3,9 @@ import { Component, createResource } from "solid-js";
 
 import style from "./Person.module.css";
 
-async function getContacts(name: string): Promise<{name:string, time:number}[]> {
+async function getContacts(
+  name: string
+): Promise<{ name: string; time: number }[]> {
   const response = await fetch(`/api/contacts?name=${name}`, {
     headers: { "Content-Type": "application/json" },
     method: "GET",
@@ -11,19 +13,30 @@ async function getContacts(name: string): Promise<{name:string, time:number}[]> 
 
   const raw_data = await response.json();
 
-  const list: {name:string, time:number}[] =
+  const list: { name: string; time: number }[] =
     raw_data.message?.flatMap((item: any) => {
       if (!item.name || item.number) return [];
 
-      return [{
-        name: item.name as string,
-        time: item.time as number }];
+      return [
+        {
+          name: item.name as string,
+          time: item.time as number,
+        },
+      ];
     }) || [];
 
   return new Promise((resolve, _) => {
     resolve(list);
   });
 }
+
+const displayTimeSince = (time: number) => {
+  if (time == 0) return "never";
+  const day = 86400000;
+  const daysSince = Math.floor((Date.now() - time) / day);
+  if (daysSince < 7) return daysSince + " days";
+  else return Math.floor(daysSince / 7) + " weeks";
+};
 
 const ChatChooser: Component<{ name: string }> = (props) => {
   const [contacts, { mutate, refetch }] = createResource(async () => {
@@ -35,11 +48,15 @@ const ChatChooser: Component<{ name: string }> = (props) => {
       {contacts() &&
         contacts()?.map((item, _) => (
           <div class={style.contact_grid}>
-            <A href={"/" + props.name + "/" + item}>
-              <button class={style.big_button}> {item.name} </button>
+            <A
+              style="text-decoration: none; padding: 2vh; padding-left: 17vw;"
+              href={"/" + props.name + "/" + item.name}
+            >
+              <button class={style.contact_button}> {item.name} </button>
+              <p class={style.p}>{displayTimeSince(item.time)}</p>
             </A>
-            <A href={"/reflection/" + props.name + "/" + item}>
-              <button class={style.big_button}> Reflect about {item.name} </button>
+            <A href={"/reflection/" + props.name + "/" + item.name}>
+              <button class={style.accent_button}> Reflect </button>
             </A>
           </div>
         ))}
