@@ -65,8 +65,9 @@
 
 .contact_grid {
   display: grid;
-  grid-template-columns: auto max-content;
-  text-align: cienter;
+  grid-template-columns: 15vw auto max-content;
+  text-align: left;
+  align-items: center;
   border-top: solid 2px #e5e1ee;
 }
 
@@ -89,4 +90,9 @@
 .p {
   margin: 0;
   color: #8b728e;
+}
+
+.profilePicture {
+  width: 14vw;
+  padding-left: 1vw;
 }

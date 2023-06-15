@@ -3,6 +3,7 @@ import { Component, createResource } from "solid-js";
 
 import style from "./Person.module.css";
 import logo from "../assets/Logo word 2.png";
+import defaultProfilePicture from "../assets/Default-Profile-Picture.png";
 
 async function getContacts(
   name: string
@@ -49,8 +50,11 @@ const ChatChooser: Component<{ name: string }> = (props) => {
       {contacts() &&
         contacts()?.map((item, _) => (
           <div class={style.contact_grid}>
+            <A href={"/" + props.name + "/" + item.name}>
+              <img class={style.profilePicture} src={defaultProfilePicture} />
+            </A>
             <A
-              style="text-decoration: none; padding: 2vh; padding-left: 17vw;"
+              style="text-decoration: none; padding: 2vh; padding-left: 2vw;"
               href={"/" + props.name + "/" + item.name}
             >
               <button class={style.contact_button}> {item.name} </button>
