@@ -228,7 +228,10 @@ const NotesInput: Component<{ me: string; them: string; preview: boolean }> = (
         const text = await note()?.json();
 
         console.log(note);
-        if (textAreaRef) textAreaRef.value = text.message.note;
+        if (textAreaRef) {
+          textAreaRef.value = text.message.note;
+          textAreaRef.scrollTop = textAreaRef.scrollHeight;
+        }
       }
     })
   );
