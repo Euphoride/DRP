@@ -73,8 +73,8 @@ const ChatChooser: Component<{ name: string }> = (props) => {
 const Prompt: Component = () => {
   return (
     <div class={style.prompt_box}>
-      <h4> Today's Prompt:</h4>
-      <p> What's the most recent book you read?</p>
+      <h4> Today's Conversation Prompt:</h4>
+      <p> Talk about a book you read recently</p>
     </div>
   );
 };

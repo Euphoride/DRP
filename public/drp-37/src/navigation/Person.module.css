@@ -57,9 +57,11 @@
 .prompt_box {
   width: 100vw;
   height: fit-content;
-  border: 1px solid #000;
   text-align: center;
   margin-top: 5vh;
+  bottom: 0;
+  background-color: #e5e1ee;
+  position: fixed;
 }
 
 .contact_grid {
