@@ -36,8 +36,10 @@ const displayTimeSince = (time: number) => {
   if (time == 0) return "never";
   const day = 86400000;
   const daysSince = Math.floor((Date.now() - time) / day);
-  if (daysSince < 7) return daysSince + " days";
-  else return Math.floor(daysSince / 7) + " weeks";
+  if (daysSince == 0) return "recently";
+  if (daysSince == 1) return "yesterday";
+  if (daysSince < 7) return daysSince + " days ago";
+  else return Math.floor(daysSince / 7) + " weeks ago";
 };
 
 const ChatChooser: Component<{ name: string }> = (props) => {
@@ -58,7 +60,9 @@ const ChatChooser: Component<{ name: string }> = (props) => {
               href={"/" + props.name + "/" + item.name}
             >
               <button class={style.contact_button}> {item.name} </button>
-              <p class={style.p}>{displayTimeSince(item.time)}</p>
+              <p class={style.p}>
+                {"sent last message " + displayTimeSince(item.time)}
+              </p>
             </A>
             <A href={"/reflection/" + props.name + "/" + item.name}>
               <button class={style.accent_button}> Reflect </button>
@@ -73,8 +77,8 @@ const ChatChooser: Component<{ name: string }> = (props) => {
 const Prompt: Component = () => {
   return (
     <div class={style.prompt_box}>
-      <h4> Today's Prompt:</h4>
-      <p> What's the most recent book you read?</p>
+      <h4> Today's Conversation Prompt:</h4>
+      <p> Talk about a book you read recently</p>
     </div>
   );
 };
