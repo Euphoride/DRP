@@ -4,7 +4,7 @@ import { Component, createResource } from "solid-js";
 import style from "./Person.module.css";
 import logo from "../assets/Logo word 2.png";
 
-async function getContacts(name: string): Promise<string[]> {
+async function getContacts(name: string): Promise<{name:string, time:number}[]> {
   const response = await fetch(`/api/contacts?name=${name}`, {
     headers: { "Content-Type": "application/json" },
     method: "GET",
@@ -12,11 +12,13 @@ async function getContacts(name: string): Promise<string[]> {
 
   const raw_data = await response.json();
 
-  const list: string[] =
+  const list: {name:string, time:number}[] =
     raw_data.message?.flatMap((item: any) => {
-      if (!item) return [];
+      if (!item.name || item.number) return [];
 
-      return item as string;
+      return [{
+        name: item.name as string,
+        time: item.time as number }];
     }) || [];
 
   return new Promise((resolve, _) => {
@@ -34,15 +36,11 @@ const ChatChooser: Component<{ name: string }> = (props) => {
       {contacts() &&
         contacts()?.map((item, _) => (
           <div class={style.contact_grid}>
-            <A
-              style="text-decoration: none; padding: 2vh; padding-left: 17vw;"
-              href={"/" + props.name + "/" + item}
-            >
-              <button class={style.contact_button}> {item} </button>
-              <p class={style.p}>Laurem Ipsum</p>
+            <A href={"/" + props.name + "/" + item}>
+              <button class={style.big_button}> {item.name} </button>
             </A>
             <A href={"/reflection/" + props.name + "/" + item}>
-              <button class={style.accent_button}> Reflect</button>
+              <button class={style.big_button}> Reflect about {item.name} </button>
             </A>
           </div>
         ))}
