@@ -244,11 +244,7 @@ const NotesInput: Component<{ me: string; them: string; preview: boolean }> = (
         class={style.notes_input}
         style={props.preview ? "height:20vh;" : ""}
         onFocusOut={() =>
-          notesFocusOutHandler(
-            props.me,
-            props.them,
-            textAreaRef!.value || "Default note"
-          )
+          notesFocusOutHandler(props.me, props.them, textAreaRef!.value || " ")
         }
       ></textarea>
     </div>

@@ -13,7 +13,7 @@
 
 .navbar {
   width: 100vw;
-  height: fit-content;
+  height: 15vh;
 
   background-color: #957fef;
 
@@ -24,7 +24,8 @@
 }
 
 .logo {
-  height: 10vh;
+  max-width: 70vw;
+  max-height: 10vh;
 }
 
 .big_button_box {
@@ -82,10 +83,11 @@
   text-align: center;
   text-decoration: none;
   display: inline-block;
-  margin: 5vw;
+  margin: 2vw;
   cursor: pointer;
   font-family: Verdana, Arial, sans-serif;
   transition-duration: 0.1s;
+  font-size: 1em;
 }
 
 .p {
