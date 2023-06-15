@@ -10,6 +10,7 @@ const remindme_1 = require("./routes/remindme");
 const subscribe_1 = require("./routes/subscribe");
 const messaging_1 = require("./routes/messaging");
 const contacts_1 = require("./routes/contacts");
+const notes_1 = require("./routes/notes");
 const app = (0, express_1.default)();
 app.use(express_1.default.json());
 (0, subscribe_1.setupNotificationRoute)(app);
@@ -20,6 +21,8 @@ app.use(express_1.default.json());
 (0, teapot_1.setupTeapotRoute)(app);
 (0, default_1.setupDefaultRoute)(app);
 (0, contacts_1.setupContactRoute)(app);
+(0, notes_1.setupNotesPostRoute)(app);
+(0, notes_1.setupNotesGetRoute)(app);
 app.use(express_1.default.static("../public/drp-37/dist"));
 // Heroku provides port using env variables apparently...
 const port = process.env.PORT || 3000;
