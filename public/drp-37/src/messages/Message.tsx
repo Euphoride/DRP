@@ -10,7 +10,7 @@ import {
 import { A } from "@solidjs/router";
 import style from "./message.module.css";
 
-import { App, ReminderPage } from "../App";
+import { ReminderInput, ReminderPage } from "../reminders/Reminders";
 
 import BackButton from "../assets/arrow.png";
 import ChatButton from "../assets/chat.png";
@@ -306,7 +306,10 @@ const MessagePage: Component<{ me: string; them: string }> = (props) => {
             setOpen={reminderSetOpen}
           >
             <div class={style.popup}>
-              <App name={props.them} callback={() => reminderSetOpen(false)} />
+              <ReminderInput
+                name={props.them}
+                callback={() => reminderSetOpen(false)}
+              />
               <button
                 onClick={() => {
                   reminderSetOpen(false);

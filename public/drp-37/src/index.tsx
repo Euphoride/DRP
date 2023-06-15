@@ -4,7 +4,6 @@ import { Component } from "solid-js";
 import { Router, Route, Routes, useParams } from "@solidjs/router";
 
 import "./index.css";
-import App from "./App";
 import MessagePage from "./messages/Message";
 import NavPage from "./navigation/Navigation";
 import PersonPage from "./navigation/PersonHome";
