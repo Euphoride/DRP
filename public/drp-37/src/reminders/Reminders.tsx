@@ -94,7 +94,9 @@ export const ReminderInput: Component<{
   return (
     <div class={styles.reminder_input}>
       <div>
-        <h3>Remind me to check in with {props.name}</h3>
+        <h3 style="margin-bottom:0;">
+          Remind me to check in with {props.name}
+        </h3>
         <textarea
           ref={textRef!}
           style={{ height: "5vh", width: "60vw" }}
@@ -130,9 +132,9 @@ export const ReminderInput: Component<{
         </button>
         <br />
         <span>or at</span>
-        <input type="datetime-local" ref={dateRef!} />
+        <input type="datetime-local" ref={dateRef!} style="margin:3vw;" />
         <button
-          class={styles.button}
+          class={styles.accent_button}
           onClick={() => {
             customReminderHandler();
             props.callback();

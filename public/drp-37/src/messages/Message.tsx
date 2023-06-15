@@ -305,13 +305,14 @@ const MessagePage: Component<{ me: string; them: string }> = (props) => {
             open={reminderOpen}
             setOpen={reminderSetOpen}
           >
-            <div class={style.popup}>
+            <div class={style.popup} style="margin-top:0;">
               <ReminderInput
                 name={props.them}
                 callback={() => reminderSetOpen(false)}
               />
               <button
                 class={style.button}
+                style="margin-top:0;"
                 onClick={() => {
                   reminderSetOpen(false);
                   setShownPage(2);

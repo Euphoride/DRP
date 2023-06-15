@@ -1,6 +1,7 @@
 .reminder_input {
   text-align: center;
   font-family: Verdana, Arial, sans-serif;
+  padding: 0;
 }
 .ReminderPage {
   margin-top: 12vh;
@@ -22,9 +23,24 @@
   transition-duration: 0.1s;
 }
 
+.accent_button {
+  background-color: #957fef;
+  border: 1px solid;
+  border-color: #957fef;
+  border-radius: 10px;
+  color: #ffffff;
+  padding: 2px 5px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  margin: 4px 2px;
+  cursor: pointer;
+  font-family: Verdana, Arial, sans-serif;
+  transition-duration: 0.1s;
+}
 .button:hover {
-  background-color: #707070;
-  border-color: #707070;
+  background-color: #957fef;
+  border-color: #957fef;
   color: white;
 }
 
@@ -36,6 +52,7 @@
   border-radius: 6px;
   color: #303030;
   padding: 5px 5px;
+  margin: 5vw;
 }
 
 .chat-image {
