@@ -65,7 +65,7 @@
 
 .message_view {
   max-width: 85vw;
-  max-height: 75vh;
+  height: 75vh;
   overflow: scroll;
 
   -ms-overflow-style: none;
