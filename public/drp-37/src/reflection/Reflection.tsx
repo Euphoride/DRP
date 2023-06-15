@@ -105,6 +105,19 @@ const reflectionPrompt = (name: string, about: string, index: number) => {
   return message;
 };
 
+const saveReflectionTimestamp = (name: string, about: string) => {
+  return async () => {
+    const note = await getNote(name, about)();
+
+    const text =
+      (await note.json()).message.note +
+      "\n\n\nReflection on: " +
+      new Date().toDateString() +
+      "\n\n";
+    notesFocusOutHandler(name, about, text);
+  };
+};
+
 const updateNotes = (
   name: string,
   about: string,
@@ -119,7 +132,7 @@ const updateNotes = (
       `
 
 Q: ${prompt}
-A: ${ref?.value || "Default answer"}
+A: ${ref?.value || ""}
       `;
     if (ref) {
       ref.value = "";
@@ -156,7 +169,7 @@ const ReflectionPage: Component<{ name: string; about: string }> = (props) => {
       </div>
       <div class={style.text_area_container}>
         {shownPage() == 5 && <FrequencyInput />}
-        {shownPage() !== 5 && (
+        {shownPage() != 5 && shownPage() != 0 && (
           <textarea
             ref={textRef!}
             style={{ height: "20vh", width: "80vw" }}
@@ -192,7 +205,7 @@ const ReflectionPage: Component<{ name: string; about: string }> = (props) => {
             <button class={style.button}>Back</button>{" "}
           </A>
         )}
-        {shownPage() != 5 && (
+        {shownPage() != 5 && shownPage() != 0 && (
           <button
             class={style.buttoncontinue}
             ref={continueRef!}
@@ -204,6 +217,21 @@ const ReflectionPage: Component<{ name: string; about: string }> = (props) => {
             }}
           >
             continue
+          </button>
+        )}
+        {shownPage() == 0 && (
+          <button
+            class={style.buttoncontinue}
+            ref={continueRef!}
+            onclick={() => {
+              saveReflectionTimestamp(props.name, props.about)();
+              restartAnimation(centerRef);
+              restartAnimation(rightRef);
+              restartAnimation(continueRef);
+              setShownPage(shownPage() == 5 ? 5 : shownPage() + 1);
+            }}
+          >
+            begin
           </button>
         )}
         {shownPage() == 5 && (
