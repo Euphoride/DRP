@@ -9,7 +9,9 @@ async function getContacts(client: Client, name: string): Promise<string[]> {
   });
 }
 
-async function listContacts(name: string): Promise<string[]> {
+async function listContacts(
+  name: string
+): Promise<{ name: string; time: number }[]> {
   const client = await establishDatabaseConnection();
   const contacts = await getContacts(client, name);
   const messages = await getMessages(client);
@@ -37,27 +39,30 @@ async function listContacts(name: string): Promise<string[]> {
     }
   });
 
-  const computedContactsWithTime = Array.from(contactMap, ([key, value]) => ({
-    key,
-    value,
-  }));
+  const computedContactsWithTime: { name: string; time: number }[] = Array.from(
+    contactMap,
+    ([name, time]) => ({
+      name,
+      time,
+    })
+  );
 
   computedContactsWithTime.reverse();
 
   const computedListedContacts: string[] = computedContactsWithTime.map(
-    (i) => i.key
+    (i) => i.name
   );
 
-  const unmentionedContacts = contacts.filter(
-    (item) => !computedListedContacts.includes(item)
-  );
+  const unmentionedContacts: { name: string; time: number }[] = contacts
+    .filter((item) => !computedListedContacts.includes(item))
+    .map((name) => ({ name: name, time: 0 }));
 
-  const listedContacts = Array.from(
-    new Set([...unmentionedContacts, ...computedListedContacts])
+  const listedContacts: { name: string; time: number }[] = Array.from(
+    new Set([...unmentionedContacts, ...computedContactsWithTime])
   );
 
   return new Promise((resolve, _) => {
-    resolve(listedContacts.filter((item) => item != name));
+    resolve(listedContacts.filter((item) => item.name != name));
   });
 }
 

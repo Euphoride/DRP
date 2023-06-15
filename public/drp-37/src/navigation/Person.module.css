@@ -1,12 +1,13 @@
 .person_header {
-  margin-left: auto;
-  margin-right: auto;
+  margin-left: 0;
+  margin-right: 0;
   width: 70%;
+  height: 15vh;
 
   align-items: center;
 
   display: grid;
-  grid-template-columns: 8vw auto 8vw;
+  grid-template-columns: 20vw auto 20vw;
   text-align: center;
 }
 
@@ -14,7 +15,7 @@
   width: 100vw;
   height: fit-content;
 
-  background-color: white;
+  background-color: #957fef;
   border-bottom: solid #c7c7c7;
 
   position: fixed;
@@ -23,13 +24,35 @@
   top: 0;
 }
 
-.big_button_box {
-  margin-top: 15vh;
+.logo {
+  height: 10vh;
 }
 
-.big_button {
-  width: 50vw;
-  height: 15vh;
+.big_button_box {
+  margin-top: 15vh;
+  border-bottom: solid 2px #e5e1ee;
+}
+.contact_button {
+  background: #ffffff;
+  color: black;
+  font-size: 1.5rem;
+  padding: 0;
+  border: none;
+}
+.accent_button {
+  background-color: #957fef;
+  border: 1px solid;
+  border-color: #957fef;
+  border-radius: 10px;
+  color: #ffffff;
+  padding: 2px 5px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  margin: 5vw;
+  cursor: pointer;
+  font-family: Verdana, Arial, sans-serif;
+  transition-duration: 0.1s;
 }
 
 .prompt_box {
@@ -42,6 +65,34 @@
 
 .contact_grid {
   display: grid;
-  grid-template-columns: auto auto;
+  grid-template-columns: 15vw auto max-content;
+  text-align: left;
+  align-items: center;
+  border-top: solid 2px #e5e1ee;
+}
+
+.button {
+  background-color: #957fef;
+  border: 2px solid;
+  border-color: #e5e1ee;
+  border-radius: 10px;
+  color: #e5e1ee;
+  padding: 2px 5px;
   text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  margin: 5vw;
+  cursor: pointer;
+  font-family: Verdana, Arial, sans-serif;
+  transition-duration: 0.1s;
+}
+
+.p {
+  margin: 0;
+  color: #8b728e;
+}
+
+.profilePicture {
+  width: 14vw;
+  padding-left: 1vw;
 }

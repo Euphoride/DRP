@@ -2,8 +2,12 @@ import { A } from "@solidjs/router";
 import { Component, createResource } from "solid-js";
 
 import style from "./Person.module.css";
+import logo from "../assets/Logo word 2.png";
+import defaultProfilePicture from "../assets/Default-Profile-Picture.png";
 
-async function getContacts(name: string): Promise<string[]> {
+async function getContacts(
+  name: string
+): Promise<{ name: string; time: number }[]> {
   const response = await fetch(`/api/contacts?name=${name}`, {
     headers: { "Content-Type": "application/json" },
     method: "GET",
@@ -11,17 +15,30 @@ async function getContacts(name: string): Promise<string[]> {
 
   const raw_data = await response.json();
 
-  const list: string[] =
+  const list: { name: string; time: number }[] =
     raw_data.message?.flatMap((item: any) => {
-      if (!item) return [];
+      if (!item.name || item.number) return [];
 
-      return item as string;
+      return [
+        {
+          name: item.name as string,
+          time: item.time as number,
+        },
+      ];
     }) || [];
 
   return new Promise((resolve, _) => {
     resolve(list);
   });
 }
+
+const displayTimeSince = (time: number) => {
+  if (time == 0) return "never";
+  const day = 86400000;
+  const daysSince = Math.floor((Date.now() - time) / day);
+  if (daysSince < 7) return daysSince + " days";
+  else return Math.floor(daysSince / 7) + " weeks";
+};
 
 const ChatChooser: Component<{ name: string }> = (props) => {
   const [contacts, { mutate, refetch }] = createResource(async () => {
@@ -33,11 +50,18 @@ const ChatChooser: Component<{ name: string }> = (props) => {
       {contacts() &&
         contacts()?.map((item, _) => (
           <div class={style.contact_grid}>
-            <A href={"/" + props.name + "/" + item}>
-              <button class={style.big_button}> {item} </button>
+            <A href={"/" + props.name + "/" + item.name}>
+              <img class={style.profilePicture} src={defaultProfilePicture} />
             </A>
-            <A href={"/reflection/" + props.name + "/" + item}>
-              <button class={style.big_button}> Reflect about {item} </button>
+            <A
+              style="text-decoration: none; padding: 2vh; padding-left: 2vw;"
+              href={"/" + props.name + "/" + item.name}
+            >
+              <button class={style.contact_button}> {item.name} </button>
+              <p class={style.p}>{displayTimeSince(item.time)}</p>
+            </A>
+            <A href={"/reflection/" + props.name + "/" + item.name}>
+              <button class={style.accent_button}> Reflect </button>
             </A>
           </div>
         ))}
@@ -61,9 +85,9 @@ const PersonPage: Component<{ name: string }> = (props) => {
       <div class={style.navbar}>
         <div class={style.person_header}>
           <A href="/">
-            <button> Back </button>
+            <button class={style.button}> Sign out </button>
           </A>
-          <p class={style.chatWith}>{props.name}'s homepage</p>
+          <img class={style.logo} src={logo} />
         </div>
       </div>
 

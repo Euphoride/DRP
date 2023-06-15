@@ -73,7 +73,7 @@ const reflectionPrompt = (name: string, about: string, index: number) => {
       message =
         "Hello " +
         name +
-        ", let's reflect on you relationship with " +
+        ", let's reflect on your relationship with " +
         about +
         ".";
       break;

@@ -263,8 +263,18 @@ const NotesPage: Component<{ me: string; them: string }> = (props) => {
 const MessagePage: Component<{ me: string; them: string }> = (props) => {
   var [shownPage, setShownPage] = createSignal(0);
   const [reminderOpen, reminderSetOpen] = createSignal(false);
+  const maybeReminderSetOpen = (toSet: boolean) => {
+    if (shownPage() != 2) {
+      reminderSetOpen(toSet);
+    }
+  };
   let reminderPopupRef;
   const [notesOpen, notesSetOpen] = createSignal(false);
+  const maybeNotesSetOpen = (toSet: boolean) => {
+    if (shownPage() != 1) {
+      notesSetOpen(toSet);
+    }
+  };
   let notesPopupRef;
   return (
     <div
@@ -303,20 +313,22 @@ const MessagePage: Component<{ me: string; them: string }> = (props) => {
           <Dismiss
             menuButton={reminderPopupRef}
             open={reminderOpen}
-            setOpen={reminderSetOpen}
+            setOpen={maybeReminderSetOpen}
           >
-            <div class={style.popup}>
+            <div class={style.popup} style="margin-top:0;">
               <ReminderInput
                 name={props.them}
                 callback={() => reminderSetOpen(false)}
               />
               <button
+                class={style.button}
+                style="margin-top:0;"
                 onClick={() => {
                   reminderSetOpen(false);
                   setShownPage(2);
                 }}
               >
-                Show full Reminders Page
+                Expand
               </button>
             </div>
           </Dismiss>
@@ -325,7 +337,7 @@ const MessagePage: Component<{ me: string; them: string }> = (props) => {
           <Dismiss
             menuButton={notesPopupRef}
             open={notesOpen}
-            setOpen={notesSetOpen}
+            setOpen={maybeNotesSetOpen}
           >
             <div class={style.popup}>
               <NotesInput me={props.me} them={props.them} preview />
@@ -336,7 +348,7 @@ const MessagePage: Component<{ me: string; them: string }> = (props) => {
                   setShownPage(1);
                 }}
               >
-                Show full Notes Page
+                Expand
               </button>
             </div>
           </Dismiss>
