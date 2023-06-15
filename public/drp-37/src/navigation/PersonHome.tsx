@@ -2,6 +2,7 @@ import { A } from "@solidjs/router";
 import { Component, createResource } from "solid-js";
 
 import style from "./Person.module.css";
+import logo from "../assets/Logo word 2.png";
 
 async function getContacts(
   name: string
@@ -80,9 +81,9 @@ const PersonPage: Component<{ name: string }> = (props) => {
       <div class={style.navbar}>
         <div class={style.person_header}>
           <A href="/">
-            <button class={style.button}> Back </button>
+            <button class={style.button}> Sign out </button>
           </A>
-          <p class={style.chatWith}>{props.name}'s homepage</p>
+          <img class={style.logo} src={logo} />
         </div>
       </div>
 
