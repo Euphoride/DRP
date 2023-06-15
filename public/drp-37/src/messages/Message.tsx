@@ -320,7 +320,8 @@ const MessagePage: Component<{ me: string; them: string }> = (props) => {
           >
             <div class={style.popup} style="margin-top:0;">
               <ReminderInput
-                name={props.them}
+                them={props.them}
+                me={props.me}
                 callback={() => reminderSetOpen(false)}
               />
               <button
@@ -360,7 +361,7 @@ const MessagePage: Component<{ me: string; them: string }> = (props) => {
       {shownPage() == 0 && <MessagePlatform me={props.me} them={props.them} />}
       {shownPage() == 1 && <NotesPage me={props.me} them={props.them} />}
       {shownPage() == 2 && (
-        <ReminderPage name={props.them} callback={() => {}} />
+        <ReminderPage them={props.them} me={props.me} callback={() => {}} />
       )}
     </div>
   );

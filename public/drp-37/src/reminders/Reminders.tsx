@@ -8,7 +8,12 @@ import {
   subscribeToNotifications,
 } from "../notifications/Notification";
 
-import { Component, createEffect, createSignal } from "solid-js";
+import {
+  Component,
+  createEffect,
+  createResource,
+  createSignal,
+} from "solid-js";
 
 import styles from "./reminders.module.css";
 const pushServerPublicKey =
@@ -19,21 +24,32 @@ const TWO_HOURS_MILLI = 7.2e6;
 const TWO_DAYS_MILLI = 1.728e8;
 
 export const RemindMe: Component<PushedNotificationRecord> = (props) => {
-  const string_date = props.date_posted.toString();
+  const date = props.date_posted;
+  const dateString = new Date(date / 1000).toDateString();
+  const about_content = props.about_content;
+
+  const now = new Date().getTime();
 
   return (
-    <div>
-      Remind Me with ID {props.id} and posted at {string_date}
+    <div style={{ "text-align": "center" }}>
+      You set reminder to talk {about_content} on {dateString}
     </div>
   );
 };
 
 export const reminderHandlerGenerator = (
   delta: number,
+  recipient: string,
+  about_person: string,
   messageBox: HTMLTextAreaElement | undefined
 ): (() => Promise<void>) => {
   return async () => {
-    await postRemindMe(new Date());
+    await postRemindMe(
+      new Date().getTime(),
+      recipient,
+      about_person,
+      messageBox!.value
+    );
 
     if (arePushNotificationsSupported()) {
       getPermission().then((_) => {
@@ -54,11 +70,10 @@ export const reminderHandlerGenerator = (
 };
 
 export const ReminderInput: Component<{
-  name: string;
+  me: string;
+  them: string;
   callback: () => boolean | void;
 }> = (props) => {
-  // const [data, { refetch }] = createResource(getRemindMes);
-
   const [remindDate, setRemindDate] = createSignal(new Date().toString());
 
   let textRef: HTMLTextAreaElement | undefined = undefined;
@@ -72,7 +87,12 @@ export const ReminderInput: Component<{
     const requestedTime = new Date(refValue).getTime();
     const currentTime = new Date().getTime();
 
-    await reminderHandlerGenerator(requestedTime - currentTime, textRef)();
+    await reminderHandlerGenerator(
+      requestedTime - currentTime,
+      props.me,
+      props.them,
+      textRef
+    )();
   };
 
   const updateDateRefHandler = (time: number): (() => void) => {
@@ -95,7 +115,7 @@ export const ReminderInput: Component<{
     <div class={styles.reminder_input}>
       <div>
         <h3 style="margin-bottom:0;">
-          Remind me to check in with {props.name}
+          Remind me to check in with {props.them}
         </h3>
         <textarea
           ref={textRef!}
@@ -149,14 +169,76 @@ export const ReminderInput: Component<{
   );
 };
 
+const getRemindMes = (name: string) => {
+  return async () => {
+    const now = new Date().getTime();
+    const response = await fetch(`/api/remindme?timestamp=${now}&name=${name}`);
+    const raw_data = await response.json();
+
+    // This guy here is meant to be validating the type of the data we just fetched.
+    // Does this a couple of ways:
+    //   1. The option chaining on message defaults to null rather than an exception if
+    //      message doesn't exist. || [] means that if it is null, the default value it
+    //      should take is the empty list.
+    //   2. We flatmap because its easy to return an "empty" (None in Maybe) case of
+    //      "this record didn't fit the type but i want to check the next ones".
+    // Thank God for monads.
+
+    const data: PushedNotificationRecord[] =
+      raw_data.message?.flatMap((item: any) => {
+        if (
+          !item.id ||
+          !item.date_posted ||
+          !item.recipient ||
+          !item.about_person ||
+          !item.about_content
+        )
+          return [];
+
+        return [
+          {
+            id: item.id as number,
+            date_posted: item.date_posted as number,
+            recipient: item.recipient as string,
+            about_person: item.about_person as string,
+            about_content: item.about_content as string,
+          },
+        ];
+      }) || [];
+
+    return data;
+  };
+};
+
 export const ReminderPage: Component<{
-  name: string;
+  me: string;
+  them: string;
   callback: () => boolean | void;
 }> = (props) => {
+  const [remindmes, { mutate, refetch }] = createResource(
+    getRemindMes(props.me)
+  );
+
   return (
     <div style="margin-top:12vh;">
-      <ReminderInput name={props.name} callback={props.callback} />
-      <p>space to display things</p>
+      <ReminderInput
+        them={props.them}
+        me={props.me}
+        callback={props.callback}
+      />
+
+      {remindmes() &&
+        remindmes()?.map((item) => {
+          return (
+            <RemindMe
+              date_posted={item.date_posted}
+              id={item.id}
+              recipient={item.recipient}
+              about_person={item.about_person}
+              about_content={item.about_content}
+            />
+          );
+        })}
     </div>
   );
 };

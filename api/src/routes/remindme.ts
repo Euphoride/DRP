@@ -8,16 +8,25 @@ dotenv.config();
 
 type PushedNotificationRecord = {
   id: number;
-  date_posted: Date;
+  date_posted: number;
+  recipient: string;
+  about_person: string;
+  about_content: string;
 };
 
 const millisecondScalingFactor = 1000;
 
-async function sendRemindMe(timestamp: Date, client: Client): Promise<Boolean> {
+async function sendRemindMe(
+  timestamp: number,
+  recipient: string,
+  about_person: string,
+  about_content: string,
+  client: Client
+): Promise<Boolean> {
   return new Promise((resolve, _) => {
     client.query(
-      "INSERT INTO pushednotifications (date_posted) VALUES ($1)",
-      [timestamp],
+      "INSERT INTO pushednotifications (date_posted, recipient, about_person, about_content) VALUES ($1, $2, $3, $4)",
+      [timestamp, recipient, about_person, about_content],
       (err, _) => {
         resolve(!err);
       }
@@ -26,26 +35,41 @@ async function sendRemindMe(timestamp: Date, client: Client): Promise<Boolean> {
 }
 
 async function getRemindMes(
-  client: Client
+  client: Client,
+  timestamp: number,
+  name: string
 ): Promise<PushedNotificationRecord[]> {
   return new Promise((resolve, reject) => {
-    client.query("SELECT * FROM pushednotifications", (err, res) => {
-      if (err) reject();
+    client.query(
+      "SELECT * FROM pushednotifications WHERE recipient = $1 AND date_posted - 604800000 >= $2 ",
+      [name, timestamp],
+      (err, res) => {
+        if (err) reject(err);
 
-      // One of the weird things about typescript
-      // is the type of things when you fetch them from
-      // some online source...
-      const records: PushedNotificationRecord[] = res.rows.map((item) => {
-        if (!item.id || !item.date_posted) reject();
+        console.log(err, res);
 
-        return {
-          id: item.id as number,
-          date_posted: new Date(item.date_posted as string),
-        };
-      });
+        const records: PushedNotificationRecord[] = res.rows.map((item) => {
+          if (
+            !item.id ||
+            !item.date_posted ||
+            !item.recipient ||
+            !item.about_person ||
+            !item.about_content
+          )
+            reject();
 
-      resolve(records);
-    });
+          return {
+            id: item.id as number,
+            date_posted: item.date_posted as number,
+            recipient: item.recipient as string,
+            about_person: item.about_person as string,
+            about_content: item.about_content as string,
+          };
+        });
+
+        resolve(records);
+      }
+    );
   });
 }
 
@@ -59,10 +83,17 @@ export function setupRemindmePostRoute(app: Express): void {
     }
 
     const timestamp: number = req.body.timestamp;
+    const recipient: string = req.body.recipient;
+    const about_person: string = req.body.about_person;
+    const about_content: string = req.body.about_content;
+
     const client = await establishDatabaseConnection();
 
     const result = await sendRemindMe(
-      new Date(timestamp * millisecondScalingFactor),
+      timestamp * millisecondScalingFactor,
+      recipient,
+      about_person,
+      about_content,
       client
     );
 
@@ -73,9 +104,24 @@ export function setupRemindmePostRoute(app: Express): void {
 }
 
 export function setupRemindmeGetRoute(app: Express): void {
-  app.get("/api/remindme", async (_, res) => {
+  app.get("/api/remindme", async (req, res) => {
+    if (
+      !req.query.timestamp ||
+      !req.query.name ||
+      typeof req.query.timestamp != "string" ||
+      typeof req.query.name != "string"
+    ) {
+      res.writeHead(422);
+      res.write("Could not handle request due to lack of timestamp");
+      res.end();
+      return;
+    }
+
+    const timestamp = parseInt(req.query.timestamp);
+    const name = req.query.name;
+
     const client = await establishDatabaseConnection();
-    const remindMes = await getRemindMes(client);
+    const remindMes = await getRemindMes(client, timestamp, name);
 
     client.end();
 
