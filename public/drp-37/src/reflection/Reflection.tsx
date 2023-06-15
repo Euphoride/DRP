@@ -14,10 +14,15 @@ const restartAnimation = (
   }
 };
 
-const PlainPage: Component<{ message: string }> = (props) => {
+const PlainPage: Component<{
+  ref: HTMLDivElement | undefined;
+  message: string;
+}> = (props) => {
   return (
     <div>
-      <div class={style.reflection_message}>{props.message}</div>
+      <div ref={props.ref!} class={style.reflection_message}>
+        {props.message}
+      </div>
     </div>
   );
 };
@@ -144,25 +149,19 @@ A: ${ref?.value || ""}
 const ReflectionPage: Component<{ name: string; about: string }> = (props) => {
   const [shownPage, setShownPage] = createSignal(0);
 
-  let leftRef: HTMLDivElement | undefined = undefined;
-  let centerRef: HTMLDivElement | undefined = undefined;
-  let rightRef: HTMLDivElement | undefined = undefined;
   let continueRef: HTMLButtonElement | undefined = undefined;
-
+  let promptRef: HTMLDivElement | undefined = undefined;
   let textRef: HTMLTextAreaElement | undefined = undefined;
 
   return (
     <div>
       <div class={style.barcontainer}>
-        <div class={style.square}>
-          <div class={style.left} ref={leftRef!}></div>
-          <div class={style.center} ref={centerRef!}></div>
-          <div class={style.right} ref={rightRef!}></div>
-        </div>
+        <div class={style.square}></div>
       </div>
       <div class={style.container}>
         {shownPage() <= 5 && (
           <PlainPage
+            ref={promptRef}
             message={reflectionPrompt(props.name, props.about, shownPage())}
           />
         )}
@@ -172,7 +171,7 @@ const ReflectionPage: Component<{ name: string; about: string }> = (props) => {
         {shownPage() != 5 && shownPage() != 0 && (
           <textarea
             ref={textRef!}
-            style={{ height: "20vh", width: "80vw" }}
+            style={{ height: "19vh", width: "80vw" }}
             class={style.textarea}
             onFocusOut={() => {
               updateNotes(
@@ -190,9 +189,8 @@ const ReflectionPage: Component<{ name: string; about: string }> = (props) => {
           <button
             class={style.button}
             onclick={() => {
-              restartAnimation(centerRef);
-              restartAnimation(rightRef);
               restartAnimation(continueRef);
+              restartAnimation(promptRef);
               setShownPage(shownPage() === 0 ? 0 : shownPage() - 1);
             }}
           >
@@ -206,18 +204,27 @@ const ReflectionPage: Component<{ name: string; about: string }> = (props) => {
           </A>
         )}
         {shownPage() != 5 && shownPage() != 0 && (
-          <button
-            class={style.buttoncontinue}
-            ref={continueRef!}
-            onclick={() => {
-              restartAnimation(centerRef);
-              restartAnimation(rightRef);
-              restartAnimation(continueRef);
-              setShownPage(shownPage() == 5 ? 5 : shownPage() + 1);
-            }}
-          >
-            continue
-          </button>
+          <div>
+            <button
+              class={style.buttoncontinue}
+              onclick={() => {
+                restartAnimation(continueRef);
+                restartAnimation(promptRef);
+                setShownPage(shownPage() == 5 ? 5 : shownPage() + 1);
+              }}
+            >
+              continue
+            </button>
+            <button
+              class={style.buttoncontinuecover}
+              ref={continueRef!}
+              onclick={() => {
+                restartAnimation(continueRef);
+                restartAnimation(promptRef);
+                setShownPage(shownPage() == 5 ? 5 : shownPage() + 1);
+              }}
+            ></button>
+          </div>
         )}
         {shownPage() == 0 && (
           <button
@@ -225,9 +232,8 @@ const ReflectionPage: Component<{ name: string; about: string }> = (props) => {
             ref={continueRef!}
             onclick={() => {
               saveReflectionTimestamp(props.name, props.about)();
-              restartAnimation(centerRef);
-              restartAnimation(rightRef);
               restartAnimation(continueRef);
+              restartAnimation(promptRef);
               setShownPage(shownPage() == 5 ? 5 : shownPage() + 1);
             }}
           >
