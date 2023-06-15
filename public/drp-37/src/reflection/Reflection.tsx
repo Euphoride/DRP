@@ -119,7 +119,7 @@ const updateNotes = (
       `
 
 Q: ${prompt}
-A: ${ref?.value || "Default answer"}
+A: ${ref?.value || ""}
       `;
     if (ref) {
       ref.value = "";
