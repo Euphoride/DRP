@@ -173,17 +173,25 @@ const ReflectionPage: Component<{ name: string; about: string }> = (props) => {
         )}
       </div>
       <div class={style.footbar}>
-        <button
-          class={style.button}
-          onclick={() => {
-            restartAnimation(centerRef);
-            restartAnimation(rightRef);
-            restartAnimation(continueRef);
-            setShownPage(shownPage() === 0 ? 0 : shownPage() - 1);
-          }}
-        >
-          Back
-        </button>
+        {shownPage() > 0 && (
+          <button
+            class={style.button}
+            onclick={() => {
+              restartAnimation(centerRef);
+              restartAnimation(rightRef);
+              restartAnimation(continueRef);
+              setShownPage(shownPage() === 0 ? 0 : shownPage() - 1);
+            }}
+          >
+            Back
+          </button>
+        )}
+        {shownPage() == 0 && (
+          <A href={"/" + props.name}>
+            {" "}
+            <button class={style.button}>Back</button>{" "}
+          </A>
+        )}
         {shownPage() != 5 && (
           <button
             class={style.buttoncontinue}
