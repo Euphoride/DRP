@@ -200,5 +200,27 @@
   height: 50vh;
 }
 
+.button {
+  background-color: #e5e1ee;
+  border: 1px solid;
+  border-color: #303030;
+  border-radius: 10px;
+  color: #303030;
+  padding: 2px 5px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  margin: 5vw;
+  cursor: pointer;
+  font-family: Verdana, Arial, sans-serif;
+  transition-duration: 0.1s;
+  position: center;
+  width: fit-content;
+  margin-left: auto;
+  margin-right: auto;
+}
+
 .popup {
+  display: flex;
+  flex-direction: column;
 }

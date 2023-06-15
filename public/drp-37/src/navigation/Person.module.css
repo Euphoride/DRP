@@ -30,6 +30,19 @@
 .big_button {
   width: 50vw;
   height: 15vh;
+  background-color: #e5e1ee;
+  border: 1px solid;
+  border-color: #303030;
+  border-radius: 10px;
+  color: #303030;
+  padding: 2px 5px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  margin: 5vw;
+  cursor: pointer;
+  font-family: Verdana, Arial, sans-serif;
+  transition-duration: 0.1s;
 }
 
 .prompt_box {
@@ -44,4 +57,20 @@
   display: grid;
   grid-template-columns: auto auto;
   text-align: center;
+}
+
+.button {
+  background-color: #e5e1ee;
+  border: 1px solid;
+  border-color: #303030;
+  border-radius: 10px;
+  color: #303030;
+  padding: 2px 5px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  margin: 5vw;
+  cursor: pointer;
+  font-family: Verdana, Arial, sans-serif;
+  transition-duration: 0.1s;
 }

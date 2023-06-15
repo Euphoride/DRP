@@ -311,12 +311,13 @@ const MessagePage: Component<{ me: string; them: string }> = (props) => {
                 callback={() => reminderSetOpen(false)}
               />
               <button
+                class={style.button}
                 onClick={() => {
                   reminderSetOpen(false);
                   setShownPage(2);
                 }}
               >
-                Show full Reminders Page
+                Expand
               </button>
             </div>
           </Dismiss>
@@ -336,7 +337,7 @@ const MessagePage: Component<{ me: string; them: string }> = (props) => {
                   setShownPage(1);
                 }}
               >
-                Show full Notes Page
+                Expand
               </button>
             </div>
           </Dismiss>

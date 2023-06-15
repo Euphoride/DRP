@@ -61,7 +61,7 @@ const PersonPage: Component<{ name: string }> = (props) => {
       <div class={style.navbar}>
         <div class={style.person_header}>
           <A href="/">
-            <button> Back </button>
+            <button class={style.button}> Back </button>
           </A>
           <p class={style.chatWith}>{props.name}'s homepage</p>
         </div>
