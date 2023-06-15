@@ -66,6 +66,45 @@ const FrequencyInput: Component = () => {
   );
 };
 
+const reflectionPrompt = (name: string, about: string, index: number) => {
+  var message: string = "";
+  switch (index) {
+    case 0:
+      message =
+        "Hello " +
+        name +
+        ", let's reflect on you relationship with " +
+        about +
+        ".";
+      break;
+    case 1:
+      message =
+        "Who is " +
+        about +
+        " to you? What do you appreciate about them? What special memories do you share?";
+      break;
+    case 2:
+      message = "When was the last time you met? When did you last chat?";
+      break;
+    case 3:
+      message = "Who were you then? What has changed in your life since then?";
+      break;
+    case 4:
+      message =
+        "What has gotten in the way of reaching out and connecting? How do you want to combat that?";
+      break;
+    case 5:
+      message =
+        "After how long would you like to be reminded to reach out to " +
+        about +
+        "?";
+      break;
+    default:
+      message = "Something went wrong";
+  }
+  return message;
+};
+
 const updateNotes = (
   name: string,
   about: string,
@@ -82,7 +121,9 @@ const updateNotes = (
 Q: ${prompt}
 A: ${ref?.value || "Default answer"}
       `;
-
+    if (ref) {
+      ref.value = "";
+    }
     notesFocusOutHandler(name, about, text);
   };
 };
@@ -107,42 +148,9 @@ const ReflectionPage: Component<{ name: string; about: string }> = (props) => {
         </div>
       </div>
       <div class={style.container}>
-        {shownPage() == 0 && (
+        {shownPage() <= 5 && (
           <PlainPage
-            message={
-              "Hello " +
-              props.name +
-              ", let's reflect on you relationship with " +
-              props.about +
-              "."
-            }
-          />
-        )}
-        {shownPage() == 1 && (
-          <PlainPage
-            message={
-              "Who is " +
-              props.about +
-              " to you? What do you appreciate about them? What special memories do you share?"
-            }
-          />
-        )}
-        {shownPage() == 2 && (
-          <PlainPage message="When was the last time you met? When did you last chat?" />
-        )}
-        {shownPage() == 3 && (
-          <PlainPage message="Who were you then? What has changed in your life since then?" />
-        )}
-        {shownPage() == 4 && (
-          <PlainPage message="What has gotten in the way of reaching out and connecting? How do you want to combat that?" />
-        )}
-        {shownPage() == 5 && (
-          <PlainPage
-            message={
-              "After how long would you like to be reminded to reach out to " +
-              props.about +
-              "?"
-            }
+            message={reflectionPrompt(props.name, props.about, shownPage())}
           />
         )}
       </div>
@@ -154,7 +162,12 @@ const ReflectionPage: Component<{ name: string; about: string }> = (props) => {
             style={{ height: "20vh", width: "80vw" }}
             class={style.textarea}
             onFocusOut={() => {
-              updateNotes(props.name, props.about, "Default prompt", textRef)();
+              updateNotes(
+                props.name,
+                props.about,
+                reflectionPrompt(props.name, props.about, shownPage()),
+                textRef
+              )();
             }}
           ></textarea>
         )}
@@ -179,7 +192,6 @@ const ReflectionPage: Component<{ name: string; about: string }> = (props) => {
             restartAnimation(rightRef);
             restartAnimation(continueRef);
             setShownPage(shownPage() == 5 ? 5 : shownPage() + 1);
-            textRef!.value = "";
           }}
         >
           continue
