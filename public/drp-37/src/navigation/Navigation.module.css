@@ -1,3 +1,19 @@
 .Navigation {
   text-align: center;
 }
+
+.accent_button {
+  background-color: #957fef;
+  border: 1px solid;
+  border-color: #957fef;
+  border-radius: 10px;
+  color: #ffffff;
+  padding: 2px 5px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  margin: 5vw;
+  cursor: pointer;
+  font-family: Verdana, Arial, sans-serif;
+  transition-duration: 0.1s;
+}
