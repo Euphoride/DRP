@@ -168,6 +168,11 @@ const ReflectionPage: Component<{ name: string; about: string }> = (props) => {
       </div>
       <div class={style.text_area_container}>
         {shownPage() == 5 && <FrequencyInput />}
+        {shownPage() == 0 && (
+          <div class={style.reflection_message} style="font-size:1rem;">
+            Take a deep breath and take notes, just for you.
+          </div>
+        )}
         {shownPage() != 5 && shownPage() != 0 && (
           <textarea
             ref={textRef!}

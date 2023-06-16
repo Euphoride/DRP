@@ -238,11 +238,15 @@ const NotesInput: Component<{ me: string; them: string; preview: boolean }> = (
 
   return (
     <div>
-      <h3 class={style.notes_header}> Notes</h3>
+      <h3 class={style.notes_header}>Your Private Notes</h3>
       <textarea
         ref={textAreaRef!}
         class={style.notes_input}
-        style={props.preview ? "height:20vh;" : ""}
+        style={
+          props.preview
+            ? "height:20vh; font-family: Verdana, Arial, sans-serif;"
+            : "font-family: Verdana, Arial, sans-serif;"
+        }
         onFocusOut={() =>
           notesFocusOutHandler(props.me, props.them, textAreaRef!.value || " ")
         }
