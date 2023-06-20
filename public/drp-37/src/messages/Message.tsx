@@ -128,6 +128,7 @@ const MessagePlatform: Component<{ me: string; them: string }> = (props) => {
   createEffect(
     on(messages, () => {
       messageViewRef?.scrollTo(0, messageViewRef?.scrollHeight);
+      refetch();
     })
   );
 
