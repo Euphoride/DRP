@@ -93,7 +93,7 @@ export async function getMessages(): Promise<MessageRecord[]> {
       ];
     }) || [];
 
-  console.log(data);
+  data.sort((a, b) => a.timestamp - b.timestamp);
 
   return data;
 }
